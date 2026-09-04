@@ -1,8 +1,18 @@
 import Section from './Section'
 import { profile } from '../data/profile'
-import { IconArrow, IconGithub, IconLinkedin, IconMail } from './Icons'
+import { IconArrow, IconGithub, IconLinkedin, IconMail, IconWhatsapp } from './Icons'
+
+const linkWhats = `https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(
+  profile.whatsappMensagem,
+)}`
 
 const canais = [
+  {
+    href: linkWhats,
+    label: 'whatsapp',
+    valor: profile.whatsappExibicao,
+    Icone: IconWhatsapp,
+  },
   { href: `mailto:${profile.email}`, label: 'e-mail', valor: profile.email, Icone: IconMail },
   { href: profile.github, label: 'github', valor: `@${profile.handle}`, Icone: IconGithub },
   {
@@ -36,10 +46,21 @@ export default function Contact() {
               final — a gente resolve o resto.
             </p>
           </div>
-          <a href={`mailto:${profile.email}`} className="btn mt-10 self-start">
-            <span>mandar e-mail</span>
-            <IconArrow />
-          </a>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a
+              href={linkWhats}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="btn"
+            >
+              <IconWhatsapp width="16" height="16" />
+              <span>chamar no whatsapp</span>
+            </a>
+            <a href={`mailto:${profile.email}`} className="btn btn--ghost">
+              <span>mandar e-mail</span>
+              <IconArrow />
+            </a>
+          </div>
         </div>
 
         <ul className="grid gap-4">

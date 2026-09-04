@@ -432,6 +432,24 @@ body {
   transform: none;
 }
 
+/* Entrada do topo: anima assim que o React monta, sem depender do
+   IntersectionObserver — o conteúdo acima da dobra não pode ficar
+   esperando gatilho de scroll para aparecer. */
+.rise {
+  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ============================================================
    MARQUEE
    ============================================================ */
@@ -503,6 +521,9 @@ body {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+  .rise {
+    animation: none;
   }
 }
 

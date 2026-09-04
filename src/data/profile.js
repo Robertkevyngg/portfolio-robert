@@ -8,6 +8,10 @@ export const profile = {
   cargo: 'Ciência da Computação · IMT',
   local: 'Diadema, São Paulo — Brasil',
   email: 'robertkevyn160406@gmail.com',
+  // WhatsApp: só dígitos, com código do país (55) + DDD + número
+  whatsapp: '5511947442519',
+  whatsappExibicao: '(11) 94744-2519',
+  whatsappMensagem: 'Olá, Robert! Vi seu portfólio e queria conversar.',
   github: 'https://github.com/Robertkevyngg',
   linkedin: 'https://www.linkedin.com/in/robert-gomes-2539343ba',
   // Frases que aparecem sendo digitadas no hero

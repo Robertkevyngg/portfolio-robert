@@ -44,16 +44,24 @@ export default function Hero() {
         <div className="grid items-center gap-14 lg:grid-cols-[1.15fr_0.85fr]">
           {/* coluna esquerda */}
           <div>
-            <div className="reveal mb-7 inline-flex items-center gap-2.5 border border-line bg-panel/60 px-3.5 py-1.5">
+            <div
+              className="rise mb-7 inline-flex items-center gap-2.5 border border-line bg-panel/60 px-3.5 py-1.5"
+              style={{ '--d': '200ms' }}
+            >
               <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-lime text-lime" />
               <span className="font-mono text-[0.68rem] tracking-[0.2em] text-muted uppercase">
                 aberto a estágio e projetos
               </span>
             </div>
 
-            <p className="reveal kicker mb-5">{profile.cargo}</p>
+            <p className="rise kicker mb-5" style={{ '--d': '120ms' }}>
+              {profile.cargo}
+            </p>
 
-            <h1 className="reveal font-display text-[clamp(2.6rem,8vw,5.5rem)] leading-[0.95] font-bold tracking-tight">
+            <h1
+              className="rise font-display text-[clamp(2.6rem,8vw,5.5rem)] leading-[0.95] font-bold tracking-tight"
+              style={{ '--d': '0ms' }}
+            >
               <span className="glitch text-ink" data-text="Robert">
                 Robert
               </span>
@@ -62,16 +70,19 @@ export default function Hero() {
               </span>
             </h1>
 
-            <p className="reveal mt-6 font-mono text-base text-cyan sm:text-lg">
+            <p className="rise mt-6 font-mono text-base text-cyan sm:text-lg" style={{ '--d': '260ms' }}>
               <span className="text-magenta">&gt;</span>{' '}
               <span className="caret">{digitado}</span>
             </p>
 
-            <p className="reveal mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            <p
+              className="rise mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
+              style={{ '--d': '320ms' }}
+            >
               {profile.bioCurta}
             </p>
 
-            <div className="reveal mt-10 flex flex-wrap gap-3">
+            <div className="rise mt-10 flex flex-wrap gap-3" style={{ '--d': '380ms' }}>
               <a href="#projetos" className="btn">
                 <span>ver projetos</span>
                 <IconArrow />
@@ -82,7 +93,10 @@ export default function Hero() {
               </a>
             </div>
 
-            <dl className="reveal mt-14 grid max-w-lg grid-cols-2 gap-y-6 sm:grid-cols-4">
+            <dl
+              className="rise mt-14 grid max-w-lg grid-cols-2 gap-y-6 sm:grid-cols-4"
+              style={{ '--d': '440ms' }}
+            >
               {profile.destaques.map((d) => (
                 <div key={d.label}>
                   <dt className="font-display text-2xl font-bold text-cyan sm:text-3xl">
@@ -97,7 +111,7 @@ export default function Hero() {
           </div>
 
           {/* coluna direita — terminal */}
-          <div className="reveal panel bracket hidden p-1 lg:block">
+          <div className="rise panel bracket hidden p-1 lg:block" style={{ '--d': '260ms' }}>
             <div className="sweep" />
             <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
               <span className="h-2.5 w-2.5 rounded-full bg-magenta/70" />
@@ -141,7 +155,10 @@ export default function Hero() {
         </div>
 
         {/* faixa rolante */}
-        <div className="marquee-wrap reveal mt-20 overflow-hidden border-y border-line py-3.5">
+        <div
+          className="marquee-wrap rise mt-20 overflow-hidden border-y border-line py-3.5"
+          style={{ '--d': '500ms' }}
+        >
           <div className="marquee">
             {[0, 1].map((n) => (
               <div key={n} className="flex shrink-0 items-center">
