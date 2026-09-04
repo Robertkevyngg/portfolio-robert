@@ -198,7 +198,10 @@ body {
 
 .glitch {
   position: relative;
-  display: inline-block;
+  /* block (e não inline-block): as duas linhas do nome precisam empilhar.
+     Fica aqui e não como utilitário do Tailwind porque CSS sem @layer tem
+     precedência sobre os utilitários — um `block` na classe seria ignorado. */
+  display: block;
 }
 .glitch::before,
 .glitch::after {

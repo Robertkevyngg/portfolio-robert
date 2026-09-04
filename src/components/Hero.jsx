@@ -54,10 +54,10 @@ export default function Hero() {
             <p className="reveal kicker mb-5">{profile.cargo}</p>
 
             <h1 className="reveal font-display text-[clamp(2.6rem,8vw,5.5rem)] leading-[0.95] font-bold tracking-tight">
-              <span className="glitch block text-ink" data-text="Robert">
+              <span className="glitch text-ink" data-text="Robert">
                 Robert
               </span>
-              <span className="glitch block text-ink" data-text="Gomes">
+              <span className="glitch text-ink" data-text="Gomes">
                 Gomes
               </span>
             </h1>
