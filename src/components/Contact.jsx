@@ -43,7 +43,7 @@ export default function Contact() {
   return (
     <Section
       id="contato"
-      indice="06 // contato"
+      indice="07 // contato"
       titulo="Vamos conversar"
       legenda="Aberto a projetos freelance e a qualquer conversa boa sobre automação industrial, segurança, dados ou front-end."
     >

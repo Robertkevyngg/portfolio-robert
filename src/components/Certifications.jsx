@@ -5,7 +5,7 @@ export default function Certifications() {
   return (
     <Section
       id="certificacoes"
-      indice="04 // certificações"
+      indice="05 // certificações"
       titulo="Certificações"
       legenda="Formação complementar em programação, cloud e desenvolvimento web."
     >

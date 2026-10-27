@@ -5,7 +5,7 @@ export default function Timeline() {
   return (
     <Section
       id="trajetoria"
-      indice="05 // trajetória"
+      indice="06 // trajetória"
       titulo="Linha do tempo"
       legenda="Formação, projetos e trabalho — na ordem em que aconteceram."
     >

@@ -8,7 +8,7 @@ export const profile = {
   cargo: 'Ciência da Computação · IMT',
   // Selo acima do nome, no topo
   selo: 'estagiando em automação industrial · Baumier',
-  estagio: { empresa: 'Baumier', area: 'Automação Industrial' },
+  estagio: { empresa: 'Baumier Automation', area: 'Automação Industrial' },
   local: 'Diadema, São Paulo — Brasil',
   localCurto: 'Diadema, SP',
   curso: 'Ciência da Computação — IMT',
@@ -74,6 +74,10 @@ export const stack = [
   {
     grupo: 'Back-end & Dados',
     itens: ['Flask', 'FastAPI', 'Node.js', 'MySQL', 'MongoDB', 'pandas', 'NumPy', 'scikit-learn'],
+  },
+  {
+    grupo: 'Automação & IIoT',
+    itens: ['Modbus TCP', 'Raspberry Pi', 'Debian', 'SSH', 'systemd'],
   },
   {
     grupo: 'Infra & Segurança',
@@ -236,7 +240,7 @@ export const trajetoria = [
     titulo: 'Estágio em Automação Industrial',
     onde: 'Baumier',
     texto:
-      'Estágio na área de automação industrial, levando a base de computação para o chão de fábrica.',
+      'Datalogger Modbus TCP em Python com dashboard web, Raspberry Pi preparado para campo (SSH, watchdog, imagem do sistema) e estação Debian com a identidade da empresa.',
   },
   {
     periodo: '2026 —',
@@ -274,6 +278,139 @@ export const trajetoria = [
       'Algoritmos e estruturas de dados, linguagens de programação (R, Scala, Haskell, C, C++), cálculo, física computacional e banco de dados.',
   },
 ]
+
+// ---------------------------------------------------------------
+// ESTÁGIO — Baumier Automation
+// Imagens em public/baumier/
+// ---------------------------------------------------------------
+export const baumier = {
+  empresa: 'Baumier Automation',
+  periodo: '2026 —',
+  sobre:
+    'Distribuidora autorizada de soluções para redes industriais, cibersegurança e IIoT, com suporte técnico certificado pelos fabricantes. A proposta é coletar, tratar e entregar os dados da indústria com segurança — do chão de fábrica à nuvem, integrando TI e TO.',
+  numeros: [
+    { valor: '2005', label: 'ano de fundação' },
+    { valor: 'ABC', label: 'sede em São Bernardo do Campo' },
+    { valor: '20+', label: 'fabricantes representados' },
+  ],
+  projetos: [
+    {
+      id: 'datalogger',
+      titulo: 'Datalogger Modbus TCP com dashboard web',
+      tipo: 'Python · Modbus TCP',
+      resumo:
+        'Teste completo de comunicação industrial: um escravo simulado faz o papel do equipamento de campo, um mestre em Python lê os registradores continuamente e um painel web mostra tudo em tempo real.',
+      etapas: [
+        {
+          rotulo: 'escravo',
+          texto: 'Dispositivo simulado com 10 holding registers (0 a 9) na porta 5020.',
+        },
+        {
+          rotulo: 'mestre',
+          texto:
+            'Datalogger que lê os registradores e grava em CSV a cada 1 min, um arquivo por dia.',
+        },
+        {
+          rotulo: 'monitoramento',
+          texto:
+            'Dashboard com gráfico por registrador (mín., média e máx.) e status da comunicação.',
+        },
+      ],
+      resultados: [
+        { valor: '92 / 0', label: 'leituras / falhas' },
+        { valor: '10', label: 'registradores monitorados' },
+        { valor: '≈ 84 KB', label: 'de CSV por dia' },
+      ],
+      imagem: {
+        src: 'baumier/dashboard-datalogger.webp',
+        largura: 1200,
+        altura: 1192,
+        alt: 'Dashboard do datalogger Modbus: dez gráficos de holding registers, status "Comunicando", 92 leituras e 0 falhas, gravação em CSV a cada 1 minuto.',
+      },
+      tags: ['Python', 'Modbus TCP', 'CSV', 'Dashboard web'],
+    },
+    {
+      id: 'raspberry',
+      titulo: 'Raspberry Pi preparado para campo',
+      tipo: 'Linux embarcado',
+      resumo:
+        'Configuração de um Raspberry Pi para operar sem monitor nem teclado, com recuperação automática e backup completo do sistema.',
+      itens: [
+        ['Acesso via SSH', 'terminal do Raspberry aberto pelo notebook, pela rede'],
+        ['VS Code Remote-SSH', 'edito no notebook, o código executa no Raspberry'],
+        ['Watchdog', 'reinicia o sistema sozinho se ele travar em campo'],
+        ['Datalogger', 'coleta e grava dados periodicamente, com data e hora'],
+        ['Imagem com dd', 'cópia bit a bit do cartão SD para restaurar ou clonar'],
+        ['Compactação', 'gzip e tar para guardar e transferir o backup'],
+      ],
+      tags: ['Raspberry Pi', 'Linux', 'SSH', 'systemd', 'Bash'],
+    },
+    {
+      id: 'debian',
+      titulo: 'Estação Debian com a identidade Baumier',
+      tipo: 'Linux · personalização',
+      resumo:
+        'Debian 13 (trixie) com GNOME 48.7 personalizado com a marca da empresa: papel de parede, logo na barra superior, dock com os apps do dia a dia e terminal que abre com o logo em ASCII e o resumo do sistema.',
+      itens: [
+        ['Área de trabalho', 'papel de parede, logo na barra e dock centralizado'],
+        ['Terminal', 'logo BAUMIER Autom@tion em ASCII nas cores da marca'],
+        ['Resumo do sistema', 'SO, kernel 6.12, GNOME, memória, disco e IP ao abrir'],
+        ['Prompt', 'usuário e prompt personalizados: baumier_guest@Guest'],
+      ],
+      imagem: {
+        src: 'baumier/debian-terminal.webp',
+        largura: 1400,
+        altura: 785,
+        alt: 'Área de trabalho do Debian com papel de parede da Baumier Automation e terminal mostrando o logo BAUMIER em ASCII e o resumo do sistema.',
+      },
+      tags: ['Debian 13', 'GNOME', 'Bash', 'Branding'],
+    },
+  ],
+  // Comandos usados no Raspberry Pi
+  comandos: [
+    { tarefa: 'Acesso remoto', cmd: 'ssh usuario@IP-do-raspberry' },
+    { tarefa: 'Copiar arquivos', cmd: 'scp usuario@IP-do-raspberry:~/backup.img.gz .' },
+    { tarefa: 'Watchdog', cmd: 'sudo systemctl status watchdog' },
+    { tarefa: 'Conferir o disco', cmd: 'lsblk' },
+    { tarefa: 'Criar imagem', cmd: 'sudo dd if=/dev/mmcblk0 of=backup.img bs=4M status=progress' },
+    { tarefa: 'Compactar', cmd: 'gzip backup.img && tar -czvf logs.tar.gz logs/' },
+    { tarefa: 'Descompactar', cmd: 'gunzip backup.img.gz && tar -xzvf logs.tar.gz' },
+  ],
+  avisoComandos:
+    'Cuidado com o dd: um destino errado (of=) apaga o disco. Confira sempre o dispositivo com lsblk antes.',
+  aprendizados: [
+    {
+      titulo: 'Convergência TI–TO',
+      texto:
+        'Fábrica e escritório passam a falar o mesmo TCP/IP — e o chão de fábrica fica exposto a riscos que antes eram só da TI.',
+    },
+    {
+      titulo: 'Segurança em OT',
+      texto:
+        'Infraestrutura crítica precisa de segmentação, controle de acesso e detecção de ameaças sem parar a produção.',
+    },
+    {
+      titulo: 'Protocolos industriais',
+      texto:
+        'Modbus na prática; PROFINET, OPC UA e MQTT como a forma de CLPs, sensores e nuvem conversarem.',
+    },
+    {
+      titulo: 'Hardware de padrão industrial',
+      texto:
+        'PC de escritório não aguenta a fábrica: PC industrial opera de −20 °C a +70 °C, sem ventoinha, em trilho DIN e com certificação ATEX.',
+    },
+    {
+      titulo: 'Equipamento em campo se recupera sozinho',
+      texto:
+        'Sem ninguém por perto, watchdog, acesso remoto e imagem de backup são o que mantém o sistema de pé.',
+    },
+    {
+      titulo: 'Dado só vale com contexto',
+      texto:
+        'Gravar com data e hora, projetar quanto o arquivo cresce e mostrar o status da comunicação é o que torna o log útil.',
+    },
+  ],
+}
 
 // Repositórios que não devem aparecer na grade vinda do GitHub
 export const reposOcultos = ['Robertkevyngg', 'test_aula']

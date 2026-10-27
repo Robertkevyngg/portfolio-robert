@@ -65,7 +65,7 @@ export default function Projects() {
   return (
     <Section
       id="projetos"
-      indice="02 // projetos"
+      indice="03 // projetos"
       titulo="O que eu construí"
       legenda="Projetos em destaque com o contexto por trás, seguidos de todos os repositórios públicos — puxados ao vivo da API do GitHub."
     >

@@ -5,6 +5,7 @@ import { IconGithub, IconLinkedin, IconMenu, IconClose, IconMail } from './Icons
 const secoes = [
   { id: 'inicio', label: 'início' },
   { id: 'sobre', label: 'sobre' },
+  { id: 'estagio', label: 'estágio' },
   { id: 'projetos', label: 'projetos' },
   { id: 'stack', label: 'stack' },
   { id: 'certificacoes', label: 'certificações' },
@@ -93,7 +94,7 @@ export default function Nav() {
 
   // se a tela crescer até o layout desktop com o menu aberto, fecha
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 64rem)')
+    const mq = window.matchMedia('(min-width: 80rem)')
     const aoMudar = () => mq.matches && setAberto(false)
     mq.addEventListener('change', aoMudar)
     return () => mq.removeEventListener('change', aoMudar)
@@ -131,7 +132,7 @@ export default function Nav() {
             </span>
           </a>
 
-          <ul className="hidden items-center gap-1 lg:flex">
+          <ul className="hidden items-center gap-1 xl:flex">
             {secoes.map((s) => (
               <li key={s.id}>
                 <a
@@ -187,7 +188,7 @@ export default function Nav() {
               aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={aberto}
               aria-controls="menu-mobile"
-              className="flex h-11 w-11 items-center justify-center text-ink lg:hidden"
+              className="flex h-11 w-11 items-center justify-center text-ink xl:hidden"
             >
               {aberto ? <IconClose /> : <IconMenu />}
             </button>
@@ -200,7 +201,7 @@ export default function Nav() {
         id="menu-mobile"
         ref={menu}
         inert={!aberto}
-        className={`fixed inset-0 z-30 flex flex-col bg-void/95 backdrop-blur-2xl transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-30 flex flex-col bg-void/95 backdrop-blur-2xl transition-opacity duration-300 xl:hidden ${
           aberto ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
       >

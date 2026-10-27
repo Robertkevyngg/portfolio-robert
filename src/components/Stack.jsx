@@ -5,7 +5,7 @@ export default function Stack() {
   return (
     <Section
       id="stack"
-      indice="03 // stack"
+      indice="04 // stack"
       titulo="Ferramentas de trabalho"
       legenda="O que uso no dia a dia — nas aulas, nos projetos próprios e nos trabalhos para clientes."
     >
