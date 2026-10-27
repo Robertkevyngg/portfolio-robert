@@ -1,520 +1,452 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   DESIGN SYSTEM — cyberpunk
+   DESIGN SYSTEM — "Planta P&ID"
+   O portfólio desenhado como uma planta de automação industrial:
+   papel técnico, tinta azul-marinho e laranja de segurança.
    ============================================================ */
 @theme {
-  --color-void: #05070d;
-  --color-deep: #080b14;
-  --color-panel: #0c111d;
-  --color-line: #1b2436;
-  --color-cyan: #00e5ff;
-  --color-magenta: #ff2e97;
-  --color-lime: #b6ff3b;
-  --color-amber: #ffc53d;
-  --color-ink: #dbe4f0;
-  --color-muted: #75849b;
+  --color-paper: #eeeae1;
+  --color-paper-2: #e3ded2;
+  --color-sheet: #f7f4ee;
+  --color-ink: #13203a;
+  --color-ink-2: #4a5568;
+  --color-rule: #c9c3b5;
+  --color-signal: #b83a0b;
+  --color-signal-bg: #c2410c;
+  --color-run: #22703a;
+  --color-amber: #9a5b00;
+  --color-hazard: #f2c230;
 
-  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
-}
-
-* {
-  -webkit-tap-highlight-color: transparent;
+  --font-display: 'Big Shoulders Display Variable', 'Arial Narrow', sans-serif;
+  --font-mono: 'Martian Mono Variable', ui-monospace, monospace;
+  --font-body: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  scroll-padding-top: 88px;
+  overflow-x: clip;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   margin: 0;
-  background: var(--color-void);
+  background-color: var(--color-paper);
+  /* papel milimetrado: grade fina a cada 8px, grade forte a cada 40px */
+  background-image:
+    linear-gradient(to right, rgba(19, 32, 58, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(19, 32, 58, 0.07) 1px, transparent 1px),
+    linear-gradient(to right, rgba(19, 32, 58, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(19, 32, 58, 0.035) 1px, transparent 1px);
+  background-size:
+    40px 40px,
+    40px 40px,
+    8px 8px,
+    8px 8px;
   color: var(--color-ink);
-  font-family: var(--font-display);
-  font-synthesis-weight: none;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
-  background: var(--color-cyan);
-  color: var(--color-void);
-}
-
-/* scrollbar --------------------------------------------------- */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-void);
-}
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--color-cyan), var(--color-magenta));
-  border: 3px solid var(--color-void);
-  border-radius: 99px;
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
 /* ============================================================
-   FUNDO — grid, vinheta, scanline, ruído
+   TIPOGRAFIA — fora do @layer: altura de linha e corpo
+   precisam vencer os text-* do Tailwind
    ============================================================ */
-.bg-layers {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.86;
+  letter-spacing: -0.005em;
 }
 
-.bg-grid {
-  position: absolute;
-  inset: -50%;
-  background-image:
-    linear-gradient(to right, rgba(0, 229, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 229, 255, 0.055) 1px, transparent 1px);
-  background-size: 54px 54px;
-  transform: perspective(500px) rotateX(0deg);
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 75%);
-}
-
-.bg-glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.5;
-}
-.bg-glow--cyan {
-  width: 46vw;
-  height: 46vw;
-  top: -14vw;
-  left: -10vw;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.3), transparent 65%);
-  animation: drift 24s ease-in-out infinite alternate;
-}
-.bg-glow--magenta {
-  width: 40vw;
-  height: 40vw;
-  bottom: -12vw;
-  right: -8vw;
-  background: radial-gradient(circle, rgba(255, 46, 151, 0.26), transparent 65%);
-  animation: drift 30s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes drift {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(6vw, 5vh, 0) scale(1.15);
-  }
-}
-
-.bg-scan {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0, 0, 0, 0.32) 3px 4px);
-  opacity: 0.35;
-  mix-blend-mode: multiply;
-}
-
-.bg-noise {
-  position: absolute;
-  inset: 0;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.bg-beam {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 140px;
-  background: linear-gradient(to bottom, transparent, rgba(0, 229, 255, 0.06), transparent);
-  animation: beam 9s linear infinite;
-}
-@keyframes beam {
-  from {
-    top: -20%;
-  }
-  to {
-    top: 120%;
-  }
-}
-
-/* ============================================================
-   CURSOR
-   ============================================================ */
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 90;
-  pointer-events: none;
-  border-radius: 999px;
-  will-change: transform;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-/* só aparece depois do primeiro movimento do mouse (e some quando ele sai da janela) */
-.cursor-dot[data-ativo='true'],
-.cursor-ring[data-ativo='true'] {
-  opacity: 1;
-}
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  background: var(--color-cyan);
-  box-shadow: 0 0 12px var(--color-cyan);
-}
-.cursor-ring {
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-  border: 1px solid rgba(0, 229, 255, 0.5);
-  transition:
-    width 0.2s,
-    height 0.2s,
-    margin 0.2s,
-    border-color 0.2s,
-    background 0.2s,
-    opacity 0.3s;
-}
-.cursor-ring[data-hot='true'] {
-  width: 58px;
-  height: 58px;
-  margin: -29px 0 0 -29px;
-  border-color: var(--color-magenta);
-  background: rgba(255, 46, 151, 0.08);
-}
-
-/* ============================================================
-   TIPOGRAFIA / EFEITOS
-   ============================================================ */
-.kicker {
+/* rótulo técnico — anotação de desenho */
+.label {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  letter-spacing: 0.28em;
+  font-variation-settings: 'wdth' 87.5;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-cyan);
 }
 
-.glitch {
-  position: relative;
-  /* block (e não inline-block): as duas linhas do nome precisam empilhar.
-     Fica aqui e não como utilitário do Tailwind porque CSS sem @layer tem
-     precedência sobre os utilitários — um `block` na classe seria ignorado. */
-  display: block;
-}
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  clip-path: inset(0 0 0 0);
-}
-.glitch::before {
-  color: var(--color-magenta);
-  transform: translate(-2px, 0);
-  animation: glitch-a 4s infinite steps(1);
-}
-.glitch::after {
-  color: var(--color-cyan);
-  transform: translate(2px, 0);
-  animation: glitch-b 4s infinite steps(1);
-}
-@keyframes glitch-a {
-  0%,
-  92%,
-  100% {
-    clip-path: inset(100% 0 0 0);
-  }
-  93% {
-    clip-path: inset(10% 0 72% 0);
-  }
-  95% {
-    clip-path: inset(48% 0 34% 0);
-  }
-  97% {
-    clip-path: inset(78% 0 8% 0);
-  }
-}
-@keyframes glitch-b {
-  0%,
-  90%,
-  100% {
-    clip-path: inset(100% 0 0 0);
-  }
-  91% {
-    clip-path: inset(62% 0 22% 0);
-  }
-  94% {
-    clip-path: inset(22% 0 60% 0);
-  }
-  98% {
-    clip-path: inset(4% 0 84% 0);
-  }
-}
-
-.caret::after {
-  content: '';
-  display: inline-block;
-  width: 0.6ch;
-  height: 1.05em;
-  margin-left: 2px;
-  background: var(--color-cyan);
-  vertical-align: -0.15em;
-  animation: blink 1.05s steps(1) infinite;
-}
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* ============================================================
-   PAINÉIS / CARDS
+/* Componentes em @layer: assim as classes utilitárias do Tailwind (hidden, sm:…) vencem */
+@layer components {
+  /* ============================================================
+   INSTRUMENTO (bolha ISA): letras em cima, número embaixo
    ============================================================ */
-.panel {
-  position: relative;
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
-    var(--color-panel);
-  border: 1px solid var(--color-line);
-  transition:
-    border-color 0.35s,
-    transform 0.35s,
-    box-shadow 0.35s;
-}
-.panel:hover,
-.panel:focus-visible {
-  border-color: rgba(0, 229, 255, 0.45);
-  box-shadow:
-    0 0 0 1px rgba(0, 229, 255, 0.1),
-    0 18px 50px -22px rgba(0, 229, 255, 0.5);
-}
+  .instr {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--s, 56px);
+    height: var(--s, 56px);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-sheet);
+    font-family: var(--font-mono);
+    font-variation-settings: 'wdth' 75;
+    line-height: 1;
+    transition:
+      background-color 0.4s,
+      color 0.4s,
+      border-color 0.4s;
+  }
+  .instr::after {
+    /* linha horizontal: instrumento montado no painel */
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1.5px solid currentColor;
+  }
+  .instr > span:first-child {
+    margin-bottom: 0.32em;
+    font-size: calc(var(--s, 56px) * 0.2);
+    font-weight: 700;
+  }
+  .instr > span:last-child {
+    margin-top: 0.32em;
+    font-size: calc(var(--s, 56px) * 0.18);
+  }
+  .instr[data-on='true'] {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
 
-/* cantos em colchete */
-.bracket::before,
-.bracket::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 1px solid var(--color-cyan);
-  opacity: 0.65;
-  transition: all 0.35s;
-}
-.bracket::before {
-  top: -1px;
-  left: -1px;
-  border-right: 0;
-  border-bottom: 0;
-}
-.bracket::after {
-  bottom: -1px;
-  right: -1px;
-  border-left: 0;
-  border-top: 0;
-}
-.panel:hover.bracket::before,
-.panel:hover.bracket::after,
-.panel:focus-visible.bracket::before,
-.panel:focus-visible.bracket::after {
-  width: 22px;
-  height: 22px;
-  opacity: 1;
-}
-
-/* linha animada no topo do card */
-.sweep {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  height: 1px;
-  width: 0;
-  background: linear-gradient(90deg, var(--color-cyan), var(--color-magenta));
-  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.panel:hover .sweep,
-.panel:focus-visible .sweep {
-  width: 100%;
-}
-
-.chip {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  padding: 0.2rem 0.55rem;
-  border: 1px solid var(--color-line);
-  color: var(--color-muted);
-  background: rgba(255, 255, 255, 0.02);
-  transition:
-    color 0.25s,
-    border-color 0.25s;
-}
-.panel:hover .chip,
-.panel:focus-visible .chip,
-.chip:hover {
-  color: var(--color-ink);
-  border-color: rgba(0, 229, 255, 0.35);
-}
-
-/* ============================================================
-   BOTÕES / LINKS
+  /* ============================================================
+   TUBULAÇÃO — espinha da página, preenchida pelo scroll
    ============================================================ */
-.btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.85rem 1.5rem;
-  border: 1px solid var(--color-cyan);
-  color: var(--color-cyan);
-  overflow: hidden;
-  transition: color 0.3s;
-}
-.btn > * {
-  position: relative;
-  z-index: 1;
-}
-.btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--color-cyan);
-  transform: translateY(101%);
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.btn:hover,
-.btn:focus-visible {
-  color: var(--color-void);
-}
-.btn:hover::before,
-.btn:focus-visible::before {
-  transform: translateY(0);
-}
-.btn--ghost {
-  border-color: var(--color-line);
-  color: var(--color-ink);
-}
-.btn--ghost::before {
-  background: var(--color-ink);
-}
+  .pipe {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 6px;
+    margin-left: -3px;
+    border-left: 1.5px solid var(--color-ink);
+    border-right: 1.5px solid var(--color-ink);
+    background: var(--color-paper);
+  }
+  .pipe-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-signal-bg);
+    transform-origin: top;
+    transform: scaleY(0);
+  }
 
-.link-u {
-  position: relative;
-}
-.link-u::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  height: 1px;
-  width: 100%;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.link-u:hover::after,
-.link-u:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  /* linha de processo tracejada com fluxo (setas de sinal) */
+  .flow-line {
+    position: relative;
+    flex: 1;
+    min-width: 28px;
+    min-height: 28px;
+    background-image: linear-gradient(to right, var(--color-ink) 55%, transparent 0);
+    background-size: 10px 1.5px;
+    background-repeat: repeat-x;
+    background-position: 0 50%;
+    animation: flow-x 0.9s linear infinite;
+  }
+  .flow-line--v {
+    background-image: linear-gradient(to bottom, var(--color-ink) 55%, transparent 0);
+    background-size: 1.5px 10px;
+    background-repeat: repeat-y;
+    background-position: 50% 0;
+    animation-name: flow-y;
+  }
+  @keyframes flow-x {
+    to {
+      background-position: 10px 50%;
+    }
+  }
+  @keyframes flow-y {
+    to {
+      background-position: 50% 10px;
+    }
+  }
+
+  /* pacote de dados correndo pela linha */
+  .packet {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    margin-top: -3.5px;
+    background: var(--color-signal-bg);
+    animation: packet-x 2.4s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+    animation-delay: var(--atraso, 0s);
+  }
+  .flow-line--v .packet {
+    top: 0;
+    left: 50%;
+    margin: 0 0 0 -3.5px;
+    animation-name: packet-y;
+  }
+  @keyframes packet-x {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+    10%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      left: calc(100% - 7px);
+      opacity: 0;
+    }
+  }
+  @keyframes packet-y {
+    0% {
+      top: 0;
+      opacity: 0;
+    }
+    10%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: calc(100% - 7px);
+      opacity: 0;
+    }
+  }
+
+  /* ============================================================
+   COTA (linha de dimensão) — setas nas pontas
+   ============================================================ */
+  .cota {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .cota::before,
+  .cota::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-ink);
+  }
+  .cota-ponta {
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    margin-top: -4px;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+  }
+  .cota-ponta--e {
+    left: 0;
+    border-right: 9px solid var(--color-ink);
+  }
+  .cota-ponta--d {
+    right: 0;
+    border-left: 9px solid var(--color-ink);
+  }
+
+  /* ============================================================
+   FOLHA (card), TABELAS e PLACA
+   ============================================================ */
+  .sheet {
+    position: relative;
+    background: var(--color-sheet);
+    border: 1.5px solid var(--color-ink);
+    box-shadow: 6px 6px 0 rgba(19, 32, 58, 0.12);
+  }
+
+  /* tabela técnica — linhas finas, cabeçalho em tinta */
+  .tabela {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tabela th {
+    padding: 0.6rem 0.9rem;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    font-variation-settings: 'wdth' 87.5;
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  .tabela td {
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--color-rule);
+    vertical-align: top;
+  }
+
+  /* placa de identificação com rebites */
+  .placa {
+    position: relative;
+    background: linear-gradient(135deg, #f4f1ea 0%, #e6e2d8 40%, #f6f3ec 55%, #e1ddd2 100%);
+    border: 1.5px solid var(--color-ink);
+    outline: 1px solid var(--color-ink);
+    outline-offset: -8px;
+    box-shadow: 6px 6px 0 rgba(19, 32, 58, 0.12);
+  }
+  .rebite {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-ink);
+    background: radial-gradient(circle at 35% 35%, #fff, #b9b3a5);
+  }
+
+  /* carimbo de certificado */
+  .carimbo {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border: 2px solid currentColor;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    font-variation-settings: 'wdth' 75;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transform: rotate(-6deg);
+  }
+
+  /* faixa de atenção (amarelo e preto) */
+  .atencao {
+    border: 6px solid transparent;
+    border-image: repeating-linear-gradient(
+        -45deg,
+        var(--color-hazard) 0 10px,
+        var(--color-ink) 10px 20px
+      )
+      6;
+  }
+
+  /* ============================================================
+   BOTÕES
+   ============================================================ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border: 1.5px solid var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-variation-settings: 'wdth' 87.5;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--color-signal-bg);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+  .btn:hover,
+  .btn:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-signal-bg);
+  }
+  .btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--color-signal-bg);
+  }
+  .btn--outline {
+    background: var(--color-sheet);
+    color: var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
+  .btn--outline:hover,
+  .btn--outline:focus-visible {
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+  .btn--outline:active {
+    box-shadow: 0 0 0 var(--color-ink);
+  }
+
+  /* botoeira — botão de comando industrial */
+  .botoeira {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-ink);
+    background: var(--color-paper-2);
+    box-shadow: inset 0 -3px 0 rgba(19, 32, 58, 0.25);
+  }
+  .botoeira-cabeca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    background: var(--cor, var(--color-ink));
+    color: #fff;
+    box-shadow:
+      inset 0 -6px 0 rgba(0, 0, 0, 0.28),
+      inset 0 3px 0 rgba(255, 255, 255, 0.25),
+      0 4px 0 rgba(19, 32, 58, 0.35);
+    transition:
+      transform 0.12s,
+      box-shadow 0.12s;
+  }
+  .group:hover .botoeira-cabeca,
+  .group:focus-visible .botoeira-cabeca {
+    transform: translateY(1px);
+  }
+  .group:active .botoeira-cabeca {
+    transform: translateY(4px);
+    box-shadow:
+      inset 0 -2px 0 rgba(0, 0, 0, 0.28),
+      inset 0 2px 0 rgba(255, 255, 255, 0.2),
+      0 0 0 rgba(19, 32, 58, 0.35);
+  }
+
+  .link-u {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-signal-bg);
+    transition: text-decoration-color 0.2s;
+  }
+  .link-u:hover {
+    text-decoration-color: currentColor;
+  }
 }
 
 /* ============================================================
-   REVEAL AO SCROLL
+   ENTRADA AO SCROLL
    ============================================================ */
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(18px);
   transition:
-    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .reveal.is-in {
   opacity: 1;
   transform: none;
-}
-
-/* Entrada do topo: anima assim que o React monta, sem depender do
-   IntersectionObserver — o conteúdo acima da dobra não pode ficar
-   esperando gatilho de scroll para aparecer. */
-.rise {
-  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: var(--d, 0ms);
-}
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* ============================================================
-   MARQUEE
-   ============================================================ */
-.marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 38s linear infinite;
-}
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-.marquee-wrap:hover .marquee,
-.marquee-wrap[data-pausado='true'] .marquee {
-  animation-play-state: paused;
-}
-
-/* ============================================================
-   MISC
-   ============================================================ */
-.pulse-dot {
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 currentColor;
-  }
-  50% {
-    opacity: 0.6;
-    box-shadow: 0 0 0 5px transparent;
-  }
-}
-
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.03) 25%,
-    rgba(255, 255, 255, 0.07) 37%,
-    rgba(255, 255, 255, 0.03) 63%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.4s ease infinite;
-}
-@keyframes shimmer {
-  from {
-    background-position: 100% 50%;
-  }
-  to {
-    background-position: 0 50%;
-  }
 }
 
 /* ============================================================
@@ -527,9 +459,9 @@ body {
   z-index: 100;
   padding: 0.75rem 1.1rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  background: var(--color-cyan);
-  color: var(--color-void);
+  font-size: 0.75rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
   transform: translateY(-150%);
   transition: transform 0.2s;
 }
@@ -537,10 +469,12 @@ body {
   transform: none;
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-signal-bg);
+  outline-offset: 3px;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
@@ -552,21 +486,12 @@ body {
     opacity: 1;
     transform: none;
   }
-  .rise {
-    animation: none;
-  }
-}
-
-@media (pointer: coarse) {
-  .cursor-dot,
-  .cursor-ring {
+  .packet {
     display: none;
   }
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-cyan);
-  outline-offset: 3px;
+  .pipe-fill {
+    transform: none;
+  }
 }
 
 /* ============================================================
@@ -580,13 +505,13 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1.1rem;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  border: 1px solid var(--color-lime);
-  background: var(--color-panel);
+  font-size: 0.72rem;
+  border: 1.5px solid var(--color-ink);
+  background: var(--color-sheet);
   color: var(--color-ink);
-  box-shadow: 0 18px 50px -20px rgba(182, 255, 59, 0.45);
+  box-shadow: 4px 4px 0 var(--color-run);
   transform: translate(-50%, 1rem);
   opacity: 0;
   pointer-events: none;
@@ -597,4 +522,14 @@ body {
 .toast[data-visivel='true'] {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+
+/* intro do topo: escondido até o GSAP assumir (sem JS ou com menos movimento, aparece direto) */
+.js [data-intro] {
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-intro] {
+    visibility: visible;
+  }
 }

@@ -1,5 +1,3 @@
-import Background from './components/Background'
-import Cursor from './components/Cursor'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -21,8 +19,6 @@ export default function App() {
       <a href="#conteudo" className="skip-link">
         pular para o conteúdo
       </a>
-      <Background />
-      <Cursor />
       <Nav />
       <main id="conteudo" tabIndex={-1} className="outline-none">
         <Hero />

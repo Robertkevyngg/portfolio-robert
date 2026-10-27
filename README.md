@@ -1,7 +1,19 @@
 # Portfólio — Robert Gomes
 
-Portfólio pessoal em React + Vite, com estética cyberpunk e os projetos puxados **ao vivo
-da API pública do GitHub**.
+Portfólio pessoal em React + Vite desenhado como uma **planta de automação industrial
+(P&ID)**, com os projetos puxados **ao vivo da API pública do GitHub**.
+
+## Design — "Planta P&ID"
+
+- **Conceito:** papel técnico milimetrado, tinta azul-marinho e laranja de segurança. Cada
+  seção é uma _área_ da planta com um instrumento no padrão ISA 5.1 (`ID-100`, `AT-200`…).
+- **Assinatura:** uma tubulação atravessa a página e é preenchida pelo scroll (GSAP
+  ScrollTrigger); quando o fluxo chega, o instrumento da área "liga".
+- **Tipografia:** Big Shoulders Display (sinalização industrial), Martian Mono (anotações
+  técnicas) e Atkinson Hyperlegible Next (texto corrido).
+- **Linguagem visual:** placa de identificação (Sobre), folhas de dados (Projetos), lista de
+  materiais (Stack), carimbos (Certificados), bloco de revisões (Trajetória), botoeiras
+  (Contato) e carimbo do desenho (rodapé).
 
 ## Rodar localmente
 
@@ -86,17 +98,18 @@ src/
 │   ├── useGithubRepos.js    ← fetch + cache da API do GitHub
 │   └── useReveal.js         ← animação de entrada (IntersectionObserver + MutationObserver)
 ├── components/
-│   ├── Background.jsx       grid, glows, scanline e ruído
-│   ├── Cursor.jsx           cursor customizado (ponto + anel com lerp)
+│   ├── Section.jsx          área da planta: tubulação + instrumento + conteúdo
+│   ├── Instrumento.jsx      bolha de instrumento ISA
 │   ├── Nav.jsx              nav com seção ativa e barra de progresso
-│   ├── Hero.jsx             título com glitch, máquina de escrever e terminal
+│   ├── Hero.jsx             nome com cota, leituras e malha de competências viva
+│   ├── Internship.jsx       estágio na Baumier: fluxograma, figuras, POP e notas
 │   ├── Projects.jsx         destaques + grade ao vivo com filtro por linguagem
 │   ├── Stack.jsx  Certifications.jsx  Timeline.jsx  About.jsx  Contact.jsx
 │   └── Icons.jsx            ícones em SVG inline (zero dependência)
 └── index.css                design system (Tailwind v4 + CSS próprio)
 ```
 
-Sem bibliotecas de animação, sem UI kit: React, Vite e Tailwind. O resto é CSS.
+Sem UI kit: React, Vite, Tailwind e GSAP (só para as animações ligadas ao scroll).
 Fontes servidas pelo próprio site (`@fontsource-variable`), sem chamada ao Google Fonts.
 
 `scripts/prerender.js` roda depois do build: renderiza o App em HTML estático dentro de
@@ -104,11 +117,11 @@ Fontes servidas pelo próprio site (`@fontsource-variable`), sem chamada ao Goog
 
 ## Acessibilidade e performance
 
-- Respeita `prefers-reduced-motion` (desliga glitch, cursor, typewriter e reveals)
+- Respeita `prefers-reduced-motion` (desliga a entrada do topo, o fluxo da tubulação e os pacotes)
 - Link "pular para o conteúdo", landmarks e títulos de seção ligados por `aria-labelledby`
 - Navegação por teclado com `:focus-visible` visível em links, botões e cards
 - Menu mobile com `inert` quando fechado, foco preso enquanto aberto e `Esc` para fechar
 - Filtros com `aria-pressed`, detalhes recolhíveis com `aria-controls` e status anunciado
-- Faixa rolante com botão de pausa; nome e frases digitadas lidos uma vez só
+- Nome do topo lido uma vez só; diagramas decorativos escondidos do leitor de tela
 - Cursor customizado some em telas de toque
 - `~73 kB` de JS com gzip, sem imagens pesadas

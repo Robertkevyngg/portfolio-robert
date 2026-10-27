@@ -21,13 +21,6 @@ export const profile = {
   whatsappMensagem: 'Olá, Robert! Vi seu portfólio e queria conversar.',
   github: 'https://github.com/Robertkevyngg',
   linkedin: 'https://www.linkedin.com/in/robert-gomes-2539343ba',
-  // Frases que aparecem sendo digitadas no hero
-  papeis: [
-    'desenvolvedor full-stack',
-    'entusiasta de cibersegurança',
-    'python · java · react',
-    'aprendendo em público',
-  ],
   bio: `Estudante de Ciência da Computação no Instituto Mauá de Tecnologia, com foco em
 desenvolvimento de software, cibersegurança e análise de dados. Desde 2024 construo
 experiência prática em projetos reais e acadêmicos — do site institucional de uma escola
@@ -35,20 +28,12 @@ a um sistema de detecção de intrusão com machine learning. Hoje estagio na á
 automação industrial na Baumier.`,
   bioCurta:
     'Construo software que resolve problema real — do front-end ao modelo que roda por trás.',
-  // Linha do "./status --agora" no terminal do topo
-  statusAgora: 'construindo um IDS com ML',
-  // Tecnologias da faixa rolante abaixo do topo
-  faixa: [
-    'Python',
-    'Java',
-    'React',
-    'FastAPI',
-    'MySQL',
-    'AWS',
-    'Docker',
-    'Linux',
-    'Machine Learning',
-    'Cibersegurança',
+  // Malha do diagrama do topo: campo → rede → proteção → dados
+  malha: [
+    { tag: 'FE', numero: '101', nome: 'Campo', detalhe: 'Python · Modbus TCP' },
+    { tag: 'SW', numero: '201', nome: 'Rede', detalhe: 'Linux · SSH · Raspberry Pi' },
+    { tag: 'FW', numero: '301', nome: 'Proteção', detalhe: 'Cibersegurança · Nmap' },
+    { tag: 'DL', numero: '401', nome: 'Dados', detalhe: 'React · ML · dashboards' },
   ],
   // `valor: null` em repositórios públicos = número vem ao vivo da API do GitHub
   destaques: [

@@ -13,8 +13,11 @@
     "snapshot": "node scripts/snapshot-repos.js"
   },
   "dependencies": {
-    "@fontsource-variable/jetbrains-mono": "^5.3.0",
-    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
+    "@fontsource-variable/big-shoulders-display": "^5.3.0",
+    "@fontsource-variable/martian-mono": "^5.3.0",
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.15.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

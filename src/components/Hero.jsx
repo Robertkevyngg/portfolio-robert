@@ -1,226 +1,166 @@
-import { useEffect, useState } from 'react'
+import { useRef } from 'react'
 import { profile } from '../data/profile'
 import { reposFallback } from '../data/reposFallback'
 import { useGithubRepos } from '../hooks/useGithubRepos'
-import { useReducedMotion } from '../hooks/useReducedMotion'
-import { IconArrow, IconMail, IconPause, IconPlay, IconShield } from './Icons'
-
-function useTypewriter(frases, velocidade = 65, pausa = 1900) {
-  const reduzido = useReducedMotion()
-  const [texto, setTexto] = useState('')
-  const [i, setI] = useState(0)
-  const [apagando, setApagando] = useState(false)
-
-  useEffect(() => {
-    if (reduzido) return
-    const atual = frases[i % frases.length]
-    let t
-
-    if (!apagando && texto === atual) {
-      t = setTimeout(() => setApagando(true), pausa)
-    } else if (apagando && texto === '') {
-      t = setTimeout(() => {
-        setApagando(false)
-        setI((v) => v + 1)
-      }, velocidade * 4)
-    } else {
-      t = setTimeout(
-        () =>
-          setTexto(apagando ? atual.slice(0, texto.length - 1) : atual.slice(0, texto.length + 1)),
-        apagando ? velocidade / 2 : velocidade,
-      )
-    }
-    return () => clearTimeout(t)
-  }, [texto, apagando, i, frases, velocidade, pausa, reduzido])
-
-  return reduzido ? frases[0] : texto
-}
+import { gsap, comMovimento, useGSAP } from '../lib/gsap'
+import Instrumento from './Instrumento'
+import { IconArrow } from './Icons'
 
 export default function Hero() {
-  const digitado = useTypewriter(profile.papeis)
+  const raiz = useRef(null)
   const { repos, estado } = useGithubRepos(profile.handle)
-  const [faixaPausada, setFaixaPausada] = useState(false)
-
   const totalRepos = estado === 'carregando' ? reposFallback.length : repos.length
-  const numeros = profile.destaques.map((d) => ({ ...d, valor: d.valor ?? totalRepos }))
+  const leituras = profile.destaques.map((d) => ({ ...d, valor: d.valor ?? totalRepos }))
+  const [nome, sobrenome] = profile.nome.toUpperCase().split(' ')
+
+  // entrada: a cota "abre", o nome sobe da linha de base e a malha liga instrumento por instrumento
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(raiz)
+      gsap.set(q('[data-intro]'), { visibility: 'visible' })
+      comMovimento(() => {
+        gsap
+          .timeline({ defaults: { ease: 'expo.out', duration: 1.1 } })
+          .from(q('.hero-linha'), { yPercent: 105, stagger: 0.12 })
+          .from(q('.hero-cota'), { clipPath: 'inset(0 50% 0 50%)', duration: 0.9 }, 0.15)
+          .from(q('.hero-texto'), { y: 16, autoAlpha: 0, stagger: 0.08, duration: 0.8 }, 0.35)
+          .from(q('.malha .instr'), { scale: 0.4, autoAlpha: 0, stagger: 0.12, duration: 0.6 }, 0.5)
+          .from(
+            q('.malha .flow-line'),
+            { clipPath: 'inset(0 100% 0 0)', stagger: 0.12, duration: 0.6, ease: 'power2.inOut' },
+            0.6,
+          )
+          .from(q('.leitura'), { y: 12, autoAlpha: 0, stagger: 0.06, duration: 0.6 }, 0.8)
+      })
+    },
+    { scope: raiz },
+  )
 
   return (
     <section
       id="inicio"
+      ref={raiz}
       aria-label="Apresentação"
-      className="relative z-10 flex min-h-[100svh] items-center px-5 pt-28 sm:px-8"
+      className="relative z-10 px-4 pt-16 sm:px-8"
     >
-      <div className="mx-auto w-full max-w-6xl">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.15fr_0.85fr]">
-          {/* coluna esquerda */}
-          <div>
-            <div
-              className="rise mb-7 inline-flex items-center gap-2.5 border border-line bg-panel/60 px-3.5 py-1.5"
-              style={{ '--d': '200ms' }}
-            >
-              <span
-                className="pulse-dot h-1.5 w-1.5 rounded-full bg-lime text-lime"
-                aria-hidden="true"
-              />
-              <span className="font-mono text-[0.7rem] tracking-[0.2em] text-muted uppercase">
-                {profile.selo}
-              </span>
-            </div>
+      <div className="mx-auto grid max-w-6xl grid-cols-[36px_1fr] gap-x-4 sm:grid-cols-[64px_1fr] sm:gap-x-8">
+        {/* início da tubulação: a origem do processo */}
+        <div className="relative" aria-hidden="true">
+          <div className="pipe top-16! sm:top-[5.5rem]!">
+            <div className="pipe-fill scale-y-100!" />
+          </div>
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:top-[5.5rem]">
+            <Instrumento
+              tag="RG"
+              numero="000"
+              tamanho={56}
+              ligado
+              className="hidden sm:inline-flex"
+            />
+            <Instrumento tag="RG" numero="000" tamanho={36} ligado className="sm:hidden" />
+          </div>
+        </div>
 
-            <p className="rise kicker mb-5" style={{ '--d': '120ms' }}>
-              {profile.cargo}
-            </p>
+        <div className="min-w-0 pt-14 pb-20 sm:pt-20" data-intro>
+          <div className="hero-texto flex flex-wrap items-center justify-between gap-3 border-b-[1.5px] border-ink pb-3">
+            <p className="label text-ink">planta de competências · des. rg-001</p>
+            <p className="label text-ink-2">folha 1/1 · escala 1:1</p>
+          </div>
 
-            {/* O nome vai uma vez para o leitor de tela; as camadas do glitch são só visuais */}
-            <h1
-              className="rise font-display text-[clamp(2.6rem,8vw,5.5rem)] leading-[0.95] font-bold tracking-tight"
-              style={{ '--d': '0ms' }}
-            >
-              <span className="sr-only">{profile.nome}</span>
-              <span aria-hidden="true">
-                {profile.nome.split(' ').map((parte) => (
-                  <span key={parte} className="glitch text-ink" data-text={parte}>
-                    {parte}
+          <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_13rem] lg:items-end">
+            <div>
+              {/* cota sobre o nome */}
+              <div className="hero-cota cota max-w-[44rem]">
+                <span className="cota-ponta cota-ponta--e" aria-hidden="true" />
+                <span className="label shrink-0 text-ink">{profile.cargo}</span>
+                <span className="cota-ponta cota-ponta--d" aria-hidden="true" />
+              </div>
+
+              <h1 className="display mt-3 text-[clamp(5.2rem,17vw,13rem)] text-ink">
+                <span className="sr-only">{profile.nome}</span>
+                <span aria-hidden="true">
+                  <span className="block overflow-hidden pb-[0.04em]">
+                    <span className="hero-linha block">{nome}</span>
                   </span>
-                ))}
-              </span>
-            </h1>
-
-            <p
-              className="rise mt-6 min-h-[1.75em] font-mono text-base text-cyan sm:text-lg"
-              style={{ '--d': '260ms' }}
-            >
-              <span className="sr-only">{profile.papeis.join(', ')}</span>
-              <span aria-hidden="true">
-                <span className="text-magenta">&gt;</span> <span className="caret">{digitado}</span>
-              </span>
-            </p>
-
-            <p
-              className="rise mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
-              style={{ '--d': '320ms' }}
-            >
-              {profile.bioCurta}
-            </p>
-
-            <div className="rise mt-10 flex flex-wrap gap-3" style={{ '--d': '380ms' }}>
-              <a href="#projetos" className="btn">
-                <span>ver projetos</span>
-                <IconArrow />
-              </a>
-              <a href="#contato" className="btn btn--ghost">
-                <IconMail />
-                <span>falar comigo</span>
-              </a>
+                  <span className="block overflow-hidden pb-[0.04em]">
+                    <span className="hero-linha block">
+                      {sobrenome}
+                      <span className="text-signal">.</span>
+                    </span>
+                  </span>
+                </span>
+              </h1>
             </div>
 
-            <dl
-              className="rise mt-14 grid max-w-lg grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4"
-              style={{ '--d': '440ms' }}
-            >
-              {numeros.map((d) => (
-                <div key={d.label} className="flex flex-col-reverse justify-end">
-                  <dt className="mt-1 font-mono text-[0.7rem] leading-snug tracking-wide text-muted uppercase">
-                    {d.label}
-                  </dt>
-                  <dd className="font-display text-2xl font-bold text-cyan tabular-nums sm:text-3xl">
-                    {d.valor}
-                  </dd>
+            {/* leituras — números como mostradores de instrumento */}
+            <dl className="grid grid-cols-2 border-t-[1.5px] border-l-[1.5px] border-ink sm:grid-cols-4 lg:mb-[0.9rem] lg:grid-cols-1">
+              {leituras.map((d) => (
+                <div
+                  key={d.label}
+                  className="leitura flex flex-col-reverse justify-end border-r-[1.5px] border-b-[1.5px] border-ink bg-sheet/80 px-4 py-3"
+                >
+                  <dt className="label mt-1 text-ink-2">{d.label}</dt>
+                  <dd className="display text-5xl text-ink tabular-nums">{d.valor}</dd>
                 </div>
               ))}
             </dl>
           </div>
 
-          {/* coluna direita — terminal (decorativo: repete dados que já estão na página) */}
-          <div
-            className="rise panel bracket hidden p-1 lg:block"
-            style={{ '--d': '260ms' }}
-            aria-hidden="true"
-          >
-            <div className="sweep" />
-            <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-magenta/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-lime/70" />
-              <span className="ml-2 font-mono text-[0.7rem] text-muted">
-                robert@imt: ~/portfolio
-              </span>
-            </div>
-            <pre className="overflow-x-auto p-5 font-mono text-[0.78rem] leading-relaxed text-muted">
-              <code>
-                <span className="text-lime">$</span> whoami{'\n'}
-                <span className="text-ink">{profile.nome}</span>
-                {'\n\n'}
-                <span className="text-lime">$</span> cat perfil.json{'\n'}
-                {'{'}
-                {'\n'}
-                {'  '}
-                <span className="text-cyan">"curso"</span>:{' '}
-                <span className="text-amber">"{profile.curso}"</span>,{'\n'}
-                {'  '}
-                <span className="text-cyan">"estagio"</span>:{' '}
-                <span className="text-amber">
-                  "{profile.estagio.area} — {profile.estagio.empresa}"
+          <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="hero-texto inline-flex items-center gap-2.5 border-[1.5px] border-ink bg-sheet px-3 py-2">
+                <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-run opacity-60" />
+                  <span className="relative h-2.5 w-2.5 rounded-full bg-run" />
                 </span>
-                ,{'\n'}
-                {'  '}
-                <span className="text-cyan">"local"</span>:{' '}
-                <span className="text-amber">"{profile.localCurto}"</span>,{'\n'}
-                {'  '}
-                <span className="text-cyan">"foco"</span>: [
-                {profile.foco.map((f, i) => (
-                  <span key={f}>
-                    {i > 0 && ', '}
-                    <span className="text-amber">"{f}"</span>
-                  </span>
-                ))}
-                ],{'\n'}
-                {'  '}
-                <span className="text-cyan">"desde"</span>:{' '}
-                <span className="text-magenta">{profile.desde}</span>
-                {'\n'}
-                {'}'}
-                {'\n\n'}
-                <span className="text-lime">$</span> ./status --agora{'\n'}
-                <span className="text-ink">{profile.statusAgora}</span>
-                <span className="caret" />
-              </code>
-            </pre>
-          </div>
-        </div>
-
-        {/* faixa rolante — decorativa (a lista completa está na seção Stack) */}
-        <div
-          className="marquee-wrap rise relative mt-20 flex items-center border-y border-line"
-          data-pausado={faixaPausada}
-          style={{ '--d': '500ms' }}
-        >
-          <div className="mr-11 min-w-0 flex-1 overflow-hidden py-3.5" aria-hidden="true">
-            <div className="marquee">
-              {[0, 1].map((n) => (
-                <div key={n} className="flex shrink-0 items-center">
-                  {profile.faixa.map((t) => (
-                    <span
-                      key={t}
-                      className="flex items-center gap-6 px-6 font-mono text-xs tracking-[0.25em] text-muted uppercase"
-                    >
-                      {t}
-                      <IconShield className="text-cyan/40" width="12" height="12" />
-                    </span>
-                  ))}
-                </div>
-              ))}
+                <span className="label text-ink">em operação — {profile.selo}</span>
+              </p>
+              <p className="hero-texto mt-6 max-w-xl text-lg leading-relaxed text-ink-2 sm:text-xl">
+                {profile.bioCurta}
+              </p>
+            </div>
+            <div className="hero-texto flex flex-wrap gap-4">
+              <a href="#projetos" className="btn">
+                ver projetos <IconArrow />
+              </a>
+              <a href="#contato" className="btn btn--outline">
+                falar comigo
+              </a>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setFaixaPausada((v) => !v)}
-            aria-label={faixaPausada ? 'Retomar animação da faixa' : 'Pausar animação da faixa'}
-            aria-pressed={faixaPausada}
-            className="absolute right-0 flex h-full w-11 shrink-0 items-center justify-center border-l border-line bg-void/80 text-muted backdrop-blur transition-colors hover:text-cyan"
-          >
-            {faixaPausada ? <IconPlay /> : <IconPause />}
-          </button>
+
+          {/* malha de competências — diagrama vivo */}
+          <figure className="mt-16">
+            <figcaption className="label mb-4 flex items-center gap-3 text-ink-2">
+              <span className="text-signal">fig. 0</span> malha de competências — do campo aos dados
+            </figcaption>
+            <ol className="malha sheet flex flex-col gap-0 p-5 sm:p-7 lg:flex-row lg:items-start">
+              {profile.malha.map((n, i) => (
+                <li key={n.tag} className="flex flex-1 flex-col lg:flex-row lg:items-start">
+                  <div className="flex items-center gap-4 lg:w-36 lg:flex-col lg:items-start lg:gap-3">
+                    <Instrumento tag={n.tag} numero={n.numero} tamanho={60} ligado={i === 3} />
+                    <div>
+                      <p className="display text-2xl text-ink">{n.nome}</p>
+                      <p className="mt-1 text-[0.9rem] leading-snug text-ink-2">{n.detalhe}</p>
+                    </div>
+                  </div>
+                  {i < profile.malha.length - 1 && (
+                    <>
+                      <div
+                        className="flow-line flow-line--v ml-[29px] h-10 flex-none lg:hidden"
+                        aria-hidden="true"
+                      >
+                        <span className="packet" style={{ '--atraso': `${i * 0.6}s` }} />
+                      </div>
+                      <div className="flow-line mx-3 mt-[30px] hidden lg:block" aria-hidden="true">
+                        <span className="packet" style={{ '--atraso': `${i * 0.6}s` }} />
+                      </div>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </figure>
         </div>
       </div>
     </section>

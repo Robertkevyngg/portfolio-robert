@@ -32,8 +32,8 @@ function arquivosDeSeo(siteUrl) {
             short_name: 'Robert Gomes',
             start_url: '.',
             display: 'standalone',
-            background_color: '#05070d',
-            theme_color: '#05070d',
+            background_color: '#eeeae1',
+            theme_color: '#eeeae1',
             icons: [
               { src: 'favicon.svg', sizes: 'any', type: 'image/svg+xml' },
               { src: 'apple-touch-icon.png', sizes: '180x180', type: 'image/png' },

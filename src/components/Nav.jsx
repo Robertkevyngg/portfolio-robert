@@ -3,22 +3,20 @@ import { profile } from '../data/profile'
 import { IconGithub, IconLinkedin, IconMenu, IconClose, IconMail } from './Icons'
 
 const secoes = [
-  { id: 'inicio', label: 'início' },
-  { id: 'sobre', label: 'sobre' },
-  { id: 'estagio', label: 'estágio' },
-  { id: 'projetos', label: 'projetos' },
-  { id: 'stack', label: 'stack' },
-  { id: 'certificacoes', label: 'certificações' },
-  { id: 'trajetoria', label: 'trajetória' },
-  { id: 'contato', label: 'contato' },
+  { id: 'sobre', label: 'sobre', area: '100' },
+  { id: 'estagio', label: 'estágio', area: '200' },
+  { id: 'projetos', label: 'projetos', area: '300' },
+  { id: 'stack', label: 'stack', area: '400' },
+  { id: 'certificacoes', label: 'certificações', area: '500' },
+  { id: 'trajetoria', label: 'trajetória', area: '600' },
+  { id: 'contato', label: 'contato', area: '700' },
 ]
 
 const iconeLink =
-  'flex h-11 w-11 items-center justify-center text-muted transition-colors hover:text-cyan'
+  'flex h-11 w-11 items-center justify-center text-ink transition-colors hover:text-signal'
 
 export default function Nav() {
-  const [ativa, setAtiva] = useState('inicio')
-  const [solido, setSolido] = useState(false)
+  const [ativa, setAtiva] = useState('')
   const [aberto, setAberto] = useState(false)
   const barra = useRef(null)
   const botaoMenu = useRef(null)
@@ -31,7 +29,6 @@ export default function Nav() {
       if (raf) return
       raf = requestAnimationFrame(() => {
         raf = 0
-        setSolido(window.scrollY > 40)
         const total = document.documentElement.scrollHeight - innerHeight
         if (barra.current) {
           barra.current.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`
@@ -56,14 +53,14 @@ export default function Nav() {
       },
       { rootMargin: '-45% 0px -50% 0px', threshold: [0, 0.25, 0.5] },
     )
-    secoes.forEach(({ id }) => {
+    ;['inicio', ...secoes.map((s) => s.id)].forEach((id) => {
       const el = document.getElementById(id)
       if (el) io.observe(el)
     })
     return () => io.disconnect()
   }, [])
 
-  // menu mobile: trava o scroll, fecha com Esc e mantém o foco dentro dele
+  // menu compacto: trava o scroll, fecha com Esc e mantém o foco dentro dele
   useEffect(() => {
     if (!aberto) return
     document.body.style.overflow = 'hidden'
@@ -92,7 +89,7 @@ export default function Nav() {
     }
   }, [aberto])
 
-  // se a tela crescer até o layout desktop com o menu aberto, fecha
+  // se a tela crescer até o layout com todos os links, fecha o menu
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 80rem)')
     const aoMudar = () => mq.matches && setAberto(false)
@@ -102,57 +99,34 @@ export default function Nav() {
 
   return (
     <>
-      <div
-        ref={barra}
-        className="fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-cyan via-magenta to-lime"
-        aria-hidden="true"
-      />
-
-      <header
-        className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
-          solido || aberto
-            ? 'border-b border-line bg-void/90 backdrop-blur-xl'
-            : 'border-b border-transparent'
-        }`}
-      >
+      <header className="fixed inset-x-0 top-0 z-40 border-b-[1.5px] border-ink bg-paper/92 backdrop-blur-md">
         <nav
           aria-label="Principal"
-          className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8"
+          className="mx-auto flex h-16 max-w-6xl items-stretch justify-between px-4 sm:px-8"
         >
-          <a
-            href="#inicio"
-            className="group flex items-center gap-2.5 py-2 font-mono text-sm tracking-widest"
-          >
-            <span
-              className="pulse-dot inline-block h-2 w-2 rounded-full bg-lime text-lime"
-              aria-hidden="true"
-            />
-            <span className="text-ink transition-colors group-hover:text-cyan">
-              {profile.handle}
+          <a href="#inicio" className="group flex items-center gap-3">
+            <span className="display text-2xl whitespace-nowrap text-ink transition-colors group-hover:text-signal">
+              {profile.nome}
+            </span>
+            <span className="label hidden border-l-[1.5px] border-ink pl-3 whitespace-nowrap text-ink-2 sm:block xl:hidden">
+              des. rg-001 · rev. 26
             </span>
           </a>
 
-          <ul className="hidden items-center gap-1 xl:flex">
+          <ul className="hidden items-stretch xl:flex">
             {secoes.map((s) => (
-              <li key={s.id}>
+              <li key={s.id} className="flex">
                 <a
                   href={`#${s.id}`}
                   aria-current={ativa === s.id ? 'location' : undefined}
-                  className={`relative block px-3 py-2 font-mono text-xs tracking-wider transition-colors ${
-                    ativa === s.id ? 'text-cyan' : 'text-muted hover:text-ink'
+                  className={`relative flex items-center gap-1.5 px-3 transition-colors ${
+                    ativa === s.id ? 'text-ink' : 'text-ink-2 hover:text-ink'
                   }`}
                 >
+                  <span className="label text-signal">{s.area}</span>
+                  <span className="label">{s.label}</span>
                   <span
-                    className={`mr-1 text-magenta transition-opacity ${
-                      ativa === s.id ? 'opacity-100' : 'opacity-0'
-                    }`}
-                    aria-hidden="true"
-                  >
-                    /
-                  </span>
-                  {s.label}
-                  <span
-                    className={`absolute inset-x-3 -bottom-px h-px origin-left bg-cyan transition-transform duration-300 ${
+                    className={`absolute inset-x-3 -bottom-[1.5px] h-[3px] origin-left bg-signal-bg transition-transform duration-300 ${
                       ativa === s.id ? 'scale-x-100' : 'scale-x-0'
                     }`}
                     aria-hidden="true"
@@ -188,44 +162,45 @@ export default function Nav() {
               aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={aberto}
               aria-controls="menu-mobile"
-              className="flex h-11 w-11 items-center justify-center text-ink xl:hidden"
+              className="ml-1 flex h-11 w-11 items-center justify-center border-[1.5px] border-ink text-ink xl:hidden"
             >
               {aberto ? <IconClose /> : <IconMenu />}
             </button>
           </div>
         </nav>
+        <div
+          ref={barra}
+          className="absolute inset-x-0 -bottom-[1.5px] h-[3px] origin-left scale-x-0 bg-signal-bg"
+          aria-hidden="true"
+        />
       </header>
 
-      {/* menu mobile — `inert` quando fechado: some do teclado e do leitor de tela */}
+      {/* menu compacto — `inert` quando fechado: some do teclado e do leitor de tela */}
       <div
         id="menu-mobile"
         ref={menu}
         inert={!aberto}
-        className={`fixed inset-0 z-30 flex flex-col bg-void/95 backdrop-blur-2xl transition-opacity duration-300 xl:hidden ${
-          aberto ? 'opacity-100' : 'pointer-events-none opacity-0'
+        className={`fixed inset-0 z-30 flex flex-col bg-paper pt-16 transition-[clip-path] duration-500 ease-[cubic-bezier(.7,0,.2,1)] xl:hidden ${
+          aberto ? '[clip-path:inset(0_0_0_0)]' : '[clip-path:inset(0_0_100%_0)]'
         }`}
       >
-        <ul className="flex flex-1 flex-col items-center justify-center gap-1">
-          {secoes.map((s, i) => (
-            <li
-              key={s.id}
-              className={`transition-all duration-500 ${
-                aberto ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
-              }`}
-              style={{ transitionDelay: aberto ? `${80 + i * 40}ms` : '0ms' }}
-            >
+        <ul className="flex flex-1 flex-col justify-center px-6 sm:px-10">
+          {secoes.map((s) => (
+            <li key={s.id} className="border-b-[1.5px] border-ink first:border-t-[1.5px]">
               <a
                 href={`#${s.id}`}
                 onClick={() => setAberto(false)}
                 aria-current={ativa === s.id ? 'location' : undefined}
-                className={`block px-6 py-3 font-display text-2xl font-medium transition-colors hover:text-cyan ${
-                  ativa === s.id ? 'text-cyan' : 'text-ink'
-                }`}
+                className="group flex items-baseline gap-4 py-3"
               >
-                <span className="mr-3 font-mono text-xs text-magenta" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
+                <span className="label w-10 text-signal">{s.area}</span>
+                <span
+                  className={`display text-[2.6rem] transition-transform group-hover:translate-x-2 ${
+                    ativa === s.id ? 'text-signal' : 'text-ink'
+                  }`}
+                >
+                  {s.label}
                 </span>
-                {s.label}
               </a>
             </li>
           ))}
@@ -233,7 +208,7 @@ export default function Nav() {
         <a
           href={`mailto:${profile.email}`}
           onClick={() => setAberto(false)}
-          className="mx-auto mb-10 flex items-center gap-2 px-4 py-3 font-mono text-xs tracking-wider text-muted hover:text-cyan"
+          className="label mx-auto mb-8 flex items-center gap-2 px-4 py-3 text-ink-2 hover:text-ink"
         >
           <IconMail width="14" height="14" /> {profile.email}
         </a>
