@@ -6,6 +6,9 @@ export const profile = {
   nome: 'Robert Gomes',
   handle: 'Robertkevyngg',
   cargo: 'Ciência da Computação · IMT',
+  // Selo acima do nome, no topo
+  selo: 'estagiando em automação industrial · Baumier',
+  estagio: { empresa: 'Baumier', area: 'Automação Industrial' },
   local: 'Diadema, São Paulo — Brasil',
   localCurto: 'Diadema, SP',
   curso: 'Ciência da Computação — IMT',
@@ -28,7 +31,8 @@ export const profile = {
   bio: `Estudante de Ciência da Computação no Instituto Mauá de Tecnologia, com foco em
 desenvolvimento de software, cibersegurança e análise de dados. Desde 2024 construo
 experiência prática em projetos reais e acadêmicos — do site institucional de uma escola
-a um sistema de detecção de intrusão com machine learning.`,
+a um sistema de detecção de intrusão com machine learning. Hoje estagio na área de
+automação industrial na Baumier.`,
   bioCurta:
     'Construo software que resolve problema real — do front-end ao modelo que roda por trás.',
   // Linha do "./status --agora" no terminal do topo
@@ -227,6 +231,13 @@ export const certificacoes = [
 // TRAJETÓRIA
 // ---------------------------------------------------------------
 export const trajetoria = [
+  {
+    periodo: '2026 —',
+    titulo: 'Estágio em Automação Industrial',
+    onde: 'Baumier',
+    texto:
+      'Estágio na área de automação industrial, levando a base de computação para o chão de fábrica.',
+  },
   {
     periodo: '2026 —',
     titulo: 'IA Teste — IDS com Machine Learning',

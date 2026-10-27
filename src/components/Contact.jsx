@@ -45,7 +45,7 @@ export default function Contact() {
       id="contato"
       indice="06 // contato"
       titulo="Vamos conversar"
-      legenda="Aberto a oportunidades de estágio, projetos freelance e qualquer conversa boa sobre segurança, dados ou front-end."
+      legenda="Aberto a projetos freelance e a qualquer conversa boa sobre automação industrial, segurança, dados ou front-end."
     >
       <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
         <div className="reveal panel bracket flex flex-col justify-between p-8 sm:p-12">

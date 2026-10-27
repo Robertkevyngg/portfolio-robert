@@ -63,7 +63,7 @@ export default function Hero() {
                 aria-hidden="true"
               />
               <span className="font-mono text-[0.7rem] tracking-[0.2em] text-muted uppercase">
-                aberto a estágio e projetos
+                {profile.selo}
               </span>
             </div>
 
@@ -157,6 +157,12 @@ export default function Hero() {
                 {'  '}
                 <span className="text-cyan">"curso"</span>:{' '}
                 <span className="text-amber">"{profile.curso}"</span>,{'\n'}
+                {'  '}
+                <span className="text-cyan">"estagio"</span>:{' '}
+                <span className="text-amber">
+                  "{profile.estagio.area} — {profile.estagio.empresa}"
+                </span>
+                ,{'\n'}
                 {'  '}
                 <span className="text-cyan">"local"</span>:{' '}
                 <span className="text-amber">"{profile.localCurto}"</span>,{'\n'}
