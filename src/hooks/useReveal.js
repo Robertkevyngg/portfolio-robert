@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 
-/** Adiciona a classe .is-in nos elementos .reveal quando entram na viewport. */
-export function useReveal(deps = []) {
+/**
+ * Adiciona a classe .is-in nos elementos .reveal quando entram na viewport.
+ * Chamado uma vez no App: um MutationObserver pega os .reveal que aparecem
+ * depois (ex.: cards que chegam da API do GitHub ou mudam com o filtro).
+ */
+export function useReveal() {
   useEffect(() => {
-    const alvos = document.querySelectorAll('.reveal:not(.is-in)')
-    if (!alvos.length) return
-
     const io = new IntersectionObserver(
       (entradas) => {
         entradas.forEach((e) => {
@@ -18,8 +19,16 @@ export function useReveal(deps = []) {
       { rootMargin: '0px 0px -12% 0px', threshold: 0.12 },
     )
 
-    alvos.forEach((a) => io.observe(a))
-    return () => io.disconnect()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps)
+    const observarNovos = () =>
+      document.querySelectorAll('.reveal:not(.is-in)').forEach((el) => io.observe(el))
+
+    observarNovos()
+    const mo = new MutationObserver(observarNovos)
+    mo.observe(document.body, { childList: true, subtree: true })
+
+    return () => {
+      io.disconnect()
+      mo.disconnect()
+    }
+  }, [])
 }

@@ -9,17 +9,21 @@ import Certifications from './components/Certifications'
 import Timeline from './components/Timeline'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import Toast from './components/Toast'
 import { useReveal } from './hooks/useReveal'
 
 export default function App() {
-  useReveal([])
+  useReveal()
 
   return (
     <>
+      <a href="#conteudo" className="skip-link">
+        pular para o conteúdo
+      </a>
       <Background />
       <Cursor />
       <Nav />
-      <main>
+      <main id="conteudo" tabIndex={-1} className="outline-none">
         <Hero />
         <About />
         <Projects />
@@ -29,6 +33,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <Toast />
     </>
   )
 }

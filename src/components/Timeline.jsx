@@ -16,7 +16,10 @@ export default function Timeline() {
             className="reveal relative pb-12 last:pb-0"
             style={{ transitionDelay: `${i * 80}ms` }}
           >
-            <span className="absolute top-1.5 -left-[calc(2rem+5px)] h-2.5 w-2.5 rotate-45 border border-cyan bg-void sm:-left-[calc(3rem+5px)]" />
+            <span
+              aria-hidden="true"
+              className="absolute top-1.5 -left-[calc(2rem+5px)] h-2.5 w-2.5 rotate-45 border border-cyan bg-void sm:-left-[calc(3rem+5px)]"
+            />
             <span className="font-mono text-xs tracking-[0.18em] text-cyan">{t.periodo}</span>
             <h3 className="mt-2 font-display text-xl font-semibold text-ink">{t.titulo}</h3>
             <p className="mt-1 font-mono text-xs text-magenta">{t.onde}</p>

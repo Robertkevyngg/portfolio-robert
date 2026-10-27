@@ -7,6 +7,10 @@ export const profile = {
   handle: 'Robertkevyngg',
   cargo: 'Ciência da Computação · IMT',
   local: 'Diadema, São Paulo — Brasil',
+  localCurto: 'Diadema, SP',
+  curso: 'Ciência da Computação — IMT',
+  desde: 2024,
+  foco: ['software', 'segurança', 'dados'],
   email: 'robertkevyn160406@gmail.com',
   // WhatsApp: só dígitos, com código do país (55) + DDD + número
   whatsapp: '5511947442519',
@@ -27,8 +31,24 @@ experiência prática em projetos reais e acadêmicos — do site institucional 
 a um sistema de detecção de intrusão com machine learning.`,
   bioCurta:
     'Construo software que resolve problema real — do front-end ao modelo que roda por trás.',
+  // Linha do "./status --agora" no terminal do topo
+  statusAgora: 'construindo um IDS com ML',
+  // Tecnologias da faixa rolante abaixo do topo
+  faixa: [
+    'Python',
+    'Java',
+    'React',
+    'FastAPI',
+    'MySQL',
+    'AWS',
+    'Docker',
+    'Linux',
+    'Machine Learning',
+    'Cibersegurança',
+  ],
+  // `valor: null` em repositórios públicos = número vem ao vivo da API do GitHub
   destaques: [
-    { valor: '20+', label: 'repositórios públicos' },
+    { valor: null, label: 'repositórios públicos' },
     { valor: '2024', label: 'primeiro commit' },
     { valor: '8', label: 'certificações' },
     { valor: '2', label: 'sites entregues p/ clientes' },
@@ -250,22 +270,25 @@ export const reposOcultos = ['Robertkevyngg', 'test_aula']
 // Descrições para repositórios que estão sem description no GitHub.
 // (O ideal é preencher a descrição no próprio GitHub — aqui é o plano B.)
 export const descricoesRepos = {
-  'Cell_questao_final': 'Questão final do projeto de citologia em Python — versão entregue.',
+  Cell_questao_final: 'Questão final do projeto de citologia em Python — versão entregue.',
   'cell-quest-': 'Primeira versão do quiz de citologia, em Python puro no terminal.',
   'java-': 'Exercícios de lógica e estruturas de dados em Java.',
   'java-exercicios-novos-': 'Segunda rodada de exercícios em Java, com foco em POO.',
-  'Aulas_Python': 'Cadernos Jupyter das aulas de Python — NumPy, Matplotlib e análise de dados.',
+  Aulas_Python: 'Cadernos Jupyter das aulas de Python — NumPy, Matplotlib e análise de dados.',
   'Aulas-python': 'Cadernos Jupyter de Python com exercícios de cálculo e física computacional.',
-  'Mongo': 'Experimentos com MongoDB: modelagem de documentos e queries em Node.js.',
-  'localbase': 'Testes de persistência local no navegador com Localbase (IndexedDB).',
+  Mongo: 'Experimentos com MongoDB: modelagem de documentos e queries em Node.js.',
+  localbase: 'Testes de persistência local no navegador com Localbase (IndexedDB).',
   'React-test-': 'Laboratório de React: componentes, estado e efeitos.',
   'Novo-Site-react-fundo-animado-': 'Site em React com fundo animado em canvas.',
-  'Front-end_html_css_Js': 'Fundamentos de front-end: HTML semântico, CSS e JavaScript sem framework.',
+  'Front-end_html_css_Js':
+    'Fundamentos de front-end: HTML semântico, CSS e JavaScript sem framework.',
   't1-front-end': 'Página responsiva construída com Bootstrap — trabalho 1 de front-end.',
-  'login': 'Tela de login com validação e interface própria.',
+  login: 'Tela de login com validação e interface própria.',
   'IA-Teste': 'IDS de rede em duas camadas: LightGBM supervisionado + autoencoder para anomalias.',
   'Atividade-algoritmos-': 'Análise comparativa de algoritmos de ordenação e busca.',
-  'Site-PI': 'Site institucional da Escola Metodista O Semeador — projeto integrador entregue ao cliente.',
-  'quiz_citologia': 'Quiz educacional em Flask com login, banco MySQL e histórico de rodadas.',
-  'Teste-de-site-para-arquitetura-': 'Portfólio para estúdio de arquitetura, com painel de administração próprio.',
+  'Site-PI':
+    'Site institucional da Escola Metodista O Semeador — projeto integrador entregue ao cliente.',
+  quiz_citologia: 'Quiz educacional em Flask com login, banco MySQL e histórico de rodadas.',
+  'Teste-de-site-para-arquitetura-':
+    'Portfólio para estúdio de arquitetura, com painel de administração próprio.',
 }

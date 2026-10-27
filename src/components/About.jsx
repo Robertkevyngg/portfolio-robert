@@ -36,7 +36,7 @@ export default function About() {
             style={{ transitionDelay: `${i * 90}ms` }}
           >
             <div className="sweep" />
-            <IconShield className="text-cyan" />
+            <IconShield className="text-cyan" width="22" height="22" />
             <h3 className="mt-5 font-display text-xl font-semibold text-ink">{p.titulo}</h3>
             <p className="mt-3 text-sm leading-relaxed text-muted">{p.texto}</p>
           </article>

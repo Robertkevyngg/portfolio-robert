@@ -4,27 +4,81 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#05070d" />
-    <title>Robert Gomes — Ciência da Computação &amp; Cibersegurança</title>
+    <title>Robert Gomes — Desenvolvedor, Ciência da Computação &amp; Cibersegurança</title>
     <meta
       name="description"
-      content="Portfólio de Robert Gomes — estudante de Ciência da Computação no IMT. Projetos em Python, Java, React, machine learning e cibersegurança."
+      content="Portfólio de Robert Gomes, estudante de Ciência da Computação no Instituto Mauá de Tecnologia (IMT). Projetos em Python, Java, React, machine learning e cibersegurança."
     />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Robert Gomes" />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
     <meta property="og:title" content="Robert Gomes — Portfólio" />
     <meta
       property="og:description"
       content="Projetos em Python, Java, React, machine learning e cibersegurança."
     />
-    <meta property="og:type" content="website" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
+    <meta property="og:image" content="%VITE_SITE_URL%/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Robert Gomes — Ciência da Computação, cibersegurança e desenvolvimento"
     />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Robert Gomes — Portfólio" />
+    <meta
+      name="twitter:description"
+      content="Projetos em Python, Java, React, machine learning e cibersegurança."
+    />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og-image.png" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Robert Gomes",
+        "alternateName": "Robert Kevyn Gomes",
+        "url": "%VITE_SITE_URL%/",
+        "jobTitle": "Estudante de Ciência da Computação",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "Instituto Mauá de Tecnologia"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Diadema",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        },
+        "knowsAbout": ["Python", "Java", "React", "Machine Learning", "Cibersegurança"],
+        "sameAs": [
+          "https://github.com/Robertkevyngg",
+          "https://www.linkedin.com/in/robert-gomes-2539343ba"
+        ]
+      }
+    </script>
+
+    <!-- Sem JS, os blocos com animação de entrada aparecem direto -->
+    <noscript>
+      <style>
+        .reveal,
+        .rise {
+          opacity: 1 !important;
+          transform: none !important;
+          animation: none !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

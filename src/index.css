@@ -15,8 +15,8 @@
   --color-ink: #dbe4f0;
   --color-muted: #75849b;
 
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
 }
 
 * {
@@ -112,11 +112,7 @@ body {
 .bg-scan {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0 3px,
-    rgba(0, 0, 0, 0.32) 3px 4px
-  );
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0, 0, 0, 0.32) 3px 4px);
   opacity: 0.35;
   mix-blend-mode: multiply;
 }
@@ -157,6 +153,13 @@ body {
   pointer-events: none;
   border-radius: 999px;
   will-change: transform;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+/* só aparece depois do primeiro movimento do mouse (e some quando ele sai da janela) */
+.cursor-dot[data-ativo='true'],
+.cursor-ring[data-ativo='true'] {
+  opacity: 1;
 }
 .cursor-dot {
   width: 6px;
@@ -175,7 +178,8 @@ body {
     height 0.2s,
     margin 0.2s,
     border-color 0.2s,
-    background 0.2s;
+    background 0.2s,
+    opacity 0.3s;
 }
 .cursor-ring[data-hot='true'] {
   width: 58px;
@@ -284,7 +288,8 @@ body {
     transform 0.35s,
     box-shadow 0.35s;
 }
-.panel:hover {
+.panel:hover,
+.panel:focus-visible {
   border-color: rgba(0, 229, 255, 0.45);
   box-shadow:
     0 0 0 1px rgba(0, 229, 255, 0.1),
@@ -315,7 +320,9 @@ body {
   border-top: 0;
 }
 .panel:hover.bracket::before,
-.panel:hover.bracket::after {
+.panel:hover.bracket::after,
+.panel:focus-visible.bracket::before,
+.panel:focus-visible.bracket::after {
   width: 22px;
   height: 22px;
   opacity: 1;
@@ -331,13 +338,14 @@ body {
   background: linear-gradient(90deg, var(--color-cyan), var(--color-magenta));
   transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.panel:hover .sweep {
+.panel:hover .sweep,
+.panel:focus-visible .sweep {
   width: 100%;
 }
 
 .chip {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   letter-spacing: 0.06em;
   padding: 0.2rem 0.55rem;
   border: 1px solid var(--color-line);
@@ -348,6 +356,7 @@ body {
     border-color 0.25s;
 }
 .panel:hover .chip,
+.panel:focus-visible .chip,
 .chip:hover {
   color: var(--color-ink);
   border-color: rgba(0, 229, 255, 0.35);
@@ -383,10 +392,12 @@ body {
   transform: translateY(101%);
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.btn:hover {
+.btn:hover,
+.btn:focus-visible {
   color: var(--color-void);
 }
-.btn:hover::before {
+.btn:hover::before,
+.btn:focus-visible::before {
   transform: translateY(0);
 }
 .btn--ghost {
@@ -412,7 +423,8 @@ body {
   transform-origin: right;
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.link-u:hover::after {
+.link-u:hover::after,
+.link-u:focus-visible::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -463,7 +475,8 @@ body {
     transform: translateX(-50%);
   }
 }
-.marquee-wrap:hover .marquee {
+.marquee-wrap:hover .marquee,
+.marquee-wrap[data-pausado='true'] .marquee {
   animation-play-state: paused;
 }
 
@@ -507,6 +520,23 @@ body {
 /* ============================================================
    ACESSIBILIDADE
    ============================================================ */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--color-cyan);
+  color: var(--color-void);
+  transform: translateY(-150%);
+  transition: transform 0.2s;
+}
+.skip-link:focus {
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -537,4 +567,34 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-cyan);
   outline-offset: 3px;
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border: 1px solid var(--color-lime);
+  background: var(--color-panel);
+  color: var(--color-ink);
+  box-shadow: 0 18px 50px -20px rgba(182, 255, 59, 0.45);
+  transform: translate(-50%, 1rem);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+}
+.toast[data-visivel='true'] {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
