@@ -24,7 +24,7 @@ export default function Toast() {
     <div className="toast" data-visivel={visivel} role="status" aria-live="polite">
       {visivel && (
         <>
-          <IconCheck className="text-lime" />
+          <IconCheck className="text-good" width="16" height="16" />
           {mensagem}
         </>
       )}

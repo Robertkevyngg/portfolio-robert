@@ -1,54 +1,31 @@
 import Section from './Section'
 import { profile } from '../data/profile'
 import { avisar } from '../lib/toast'
-import { IconCopy, IconGithub, IconLinkedin, IconMail, IconWhatsapp } from './Icons'
+import { IconArrow, IconCopy, IconGithub, IconLinkedin, IconMail, IconWhatsapp } from './Icons'
 
 const linkWhats = `https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(
   profile.whatsappMensagem,
 )}`
 
-// cada canal é uma botoeira do painel: cor da cabeça do botão + plaqueta de identificação
-const botoes = [
-  {
-    href: linkWhats,
-    tag: 'HS-701',
-    label: 'WhatsApp',
-    valor: profile.whatsappExibicao,
-    cor: 'var(--color-run)',
-    Icone: IconWhatsapp,
-  },
+const canais = [
+  { href: linkWhats, label: 'WhatsApp', valor: profile.whatsappExibicao, Icone: IconWhatsapp },
   {
     href: `mailto:${profile.email}`,
-    tag: 'HS-702',
     label: 'E-mail',
     valor: profile.email,
-    cor: 'var(--color-signal-bg)',
     Icone: IconMail,
+    copiar: profile.email,
   },
-  {
-    href: profile.github,
-    tag: 'HS-703',
-    label: 'GitHub',
-    valor: `@${profile.handle}`,
-    cor: 'var(--color-ink)',
-    Icone: IconGithub,
-  },
-  {
-    href: profile.linkedin,
-    tag: 'HS-704',
-    label: 'LinkedIn',
-    valor: profile.nome,
-    cor: '#1d4f91',
-    Icone: IconLinkedin,
-  },
+  { href: profile.github, label: 'GitHub', valor: `@${profile.handle}`, Icone: IconGithub },
+  { href: profile.linkedin, label: 'LinkedIn', valor: profile.nome, Icone: IconLinkedin },
 ]
 
-async function copiarEmail() {
+async function copiar(texto) {
   try {
-    await navigator.clipboard.writeText(profile.email)
-    avisar('e-mail copiado')
+    await navigator.clipboard.writeText(texto)
+    avisar('E-mail copiado')
   } catch {
-    avisar('não deu para copiar — selecione o endereço manualmente')
+    avisar('Não deu para copiar — selecione o endereço manualmente')
   }
 }
 
@@ -56,55 +33,64 @@ export default function Contact() {
   return (
     <Section
       id="contato"
-      tag="HS"
-      area="700"
+      tint
+      eyebrow="Contato"
       titulo="Vamos conversar"
       legenda="Aberto a projetos freelance e a qualquer conversa boa sobre automação industrial, segurança, dados ou front-end. Respondo rápido."
     >
-      <div className="reveal sheet">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b-[1.5px] border-ink bg-ink px-5 py-3 text-paper">
-          <p className="label">painel de contato · hs-700</p>
-          <p className="label flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-[#4ade80]" aria-hidden="true" />
-            energizado
-          </p>
+      <div className="mx-auto max-w-3xl">
+        <div className="reveal flex flex-wrap items-center justify-center gap-3">
+          <a href={linkWhats} target="_blank" rel="noreferrer noopener" className="btn">
+            <IconWhatsapp width="18" height="18" /> Chamar no WhatsApp
+            <span className="sr-only">(abre em nova aba)</span>
+          </a>
+          <a href={`mailto:${profile.email}`} className="btn btn--ghost">
+            Mandar e-mail
+          </a>
         </div>
 
-        <ul className="grid grid-cols-2 lg:grid-cols-4">
-          {botoes.map(({ href, tag, label, valor, cor, Icone }) => {
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+          {canais.map(({ href, label, valor, Icone, copiar: textoCopia }, i) => {
             const externo = !href.startsWith('mailto')
             return (
               <li
-                key={tag}
-                className="flex min-w-0 flex-col items-center border-r border-b border-rule px-3 py-8 text-center even:border-r-0 lg:border-b-0 lg:last:border-r-0 lg:even:border-r"
+                key={label}
+                className="reveal relative min-w-0"
+                style={{ transitionDelay: `${(i % 2) * 80}ms` }}
               >
                 <a
                   href={href}
                   target={externo ? '_blank' : undefined}
                   rel={externo ? 'noreferrer noopener' : undefined}
-                  className="group flex max-w-full flex-col items-center"
+                  className={`card card-hover group flex min-w-0 items-center gap-4 p-5 ${
+                    textoCopia ? 'pr-16' : ''
+                  }`}
                 >
-                  <span className="botoeira" style={{ '--cor': cor }}>
-                    <span className="botoeira-cabeca">
-                      <Icone width="22" height="22" />
-                    </span>
+                  <span className="icon-circle shrink-0">
+                    <Icone width="20" height="20" />
                   </span>
-                  <span className="mt-4 border-[1.5px] border-ink bg-paper px-3 py-1.5">
-                    <span className="display block text-xl text-ink">{label}</span>
-                    <span className="label block text-ink-2">{tag}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm text-text-3">{label}</span>
+                    <span className="mt-0.5 block truncate font-medium text-text">{valor}</span>
+                    {externo && <span className="sr-only">(abre em nova aba)</span>}
                   </span>
-                  <span className="mt-3 max-w-full text-[0.9rem] break-all text-ink group-hover:text-signal sm:break-normal">
-                    {valor}
-                  </span>
-                  {externo && <span className="sr-only">(abre em nova aba)</span>}
+                  {!textoCopia && (
+                    <IconArrow
+                      width="18"
+                      height="18"
+                      className="shrink-0 text-text-3 transition-transform group-hover:translate-x-1 group-hover:text-accent"
+                    />
+                  )}
                 </a>
-                {label === 'E-mail' && (
+                {textoCopia && (
                   <button
                     type="button"
-                    onClick={copiarEmail}
-                    className="label mt-2 flex min-h-9 items-center gap-1.5 px-2 text-ink-2 hover:text-ink"
+                    onClick={() => copiar(textoCopia)}
+                    aria-label="Copiar endereço de e-mail"
+                    title="Copiar e-mail"
+                    className="absolute top-1/2 right-4 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-text-2 transition-colors hover:bg-bg-2 hover:text-accent"
                   >
-                    <IconCopy width="13" height="13" /> copiar
+                    <IconCopy width="16" height="16" />
                   </button>
                 )}
               </li>
@@ -112,13 +98,7 @@ export default function Contact() {
           })}
         </ul>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t-[1.5px] border-ink px-5 py-4">
-          <p className="label text-ink-2">local de instalação: {profile.local}</p>
-          <a href={linkWhats} target="_blank" rel="noreferrer noopener" className="btn">
-            <IconWhatsapp width="16" height="16" /> chamar agora
-            <span className="sr-only">(abre em nova aba)</span>
-          </a>
-        </div>
+        <p className="reveal mt-6 text-center text-sm text-text-3">{profile.local}</p>
       </div>
     </Section>
   )

@@ -1,31 +1,77 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   DESIGN SYSTEM — "Planta P&ID"
-   O portfólio desenhado como uma planta de automação industrial:
-   papel técnico, tinta azul-marinho e laranja de segurança.
+   DESIGN SYSTEM — estilo Apple
+   Tipografia grande e limpa, muito respiro, vidro fosco,
+   cantos contínuos e claro/escuro automático.
    ============================================================ */
 @theme {
-  --color-paper: #eeeae1;
-  --color-paper-2: #e3ded2;
-  --color-sheet: #f7f4ee;
-  --color-ink: #13203a;
-  --color-ink-2: #4a5568;
-  --color-rule: #c9c3b5;
-  --color-signal: #b83a0b;
-  --color-signal-bg: #c2410c;
-  --color-run: #22703a;
-  --color-amber: #9a5b00;
-  --color-hazard: #f2c230;
+  --color-bg: #ffffff;
+  --color-bg-2: #f5f5f7;
+  --color-card: #ffffff;
+  --color-text: #1d1d1f;
+  --color-text-2: #6e6e73;
+  --color-text-3: #86868b;
+  --color-line: #d2d2d7;
+  --color-accent: #0066cc;
+  --color-accent-solid: #0071e3;
+  --color-on-accent: #ffffff;
+  --color-good: #1d8a4e;
 
-  --font-display: 'Big Shoulders Display Variable', 'Arial Narrow', sans-serif;
-  --font-mono: 'Martian Mono Variable', ui-monospace, monospace;
-  --font-body: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter Variable', 'Inter',
+    system-ui, sans-serif;
+
+  --radius-card: 22px;
+  --radius-lg: 28px;
+  --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+:root {
+  color-scheme: light;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.04), 0 10px 40px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.08), 0 18px 60px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: #000000;
+    --color-bg-2: #161617;
+    --color-card: #1d1d1f;
+    --color-text: #f5f5f7;
+    --color-text-2: #a1a1a6;
+    --color-text-3: #86868b;
+    --color-line: #38383a;
+    --color-accent: #2997ff;
+    --color-accent-solid: #0a84ff;
+    --color-good: #30d158;
+    --glass-bg: rgba(22, 22, 23, 0.72);
+    --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.3), 0 10px 40px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.4), 0 18px 60px rgba(0, 0, 0, 0.65);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #000000;
+  --color-bg-2: #161617;
+  --color-card: #1d1d1f;
+  --color-text: #f5f5f7;
+  --color-text-2: #a1a1a6;
+  --color-text-3: #86868b;
+  --color-line: #38383a;
+  --color-accent: #2997ff;
+  --color-accent-solid: #0a84ff;
+  --color-good: #30d158;
+  --glass-bg: rgba(22, 22, 23, 0.72);
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.3), 0 10px 40px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.4), 0 18px 60px rgba(0, 0, 0, 0.65);
 }
 
 html {
-  scroll-padding-top: 88px;
-  overflow-x: clip;
+  scroll-padding-top: 72px;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -35,402 +81,137 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--color-paper);
-  /* papel milimetrado: grade fina a cada 8px, grade forte a cada 40px */
-  background-image:
-    linear-gradient(to right, rgba(19, 32, 58, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(19, 32, 58, 0.07) 1px, transparent 1px),
-    linear-gradient(to right, rgba(19, 32, 58, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(19, 32, 58, 0.035) 1px, transparent 1px);
-  background-size:
-    40px 40px,
-    40px 40px,
-    8px 8px,
-    8px 8px;
-  color: var(--color-ink);
-  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv11', 'ss01';
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: color-mix(in srgb, var(--color-accent) 24%, transparent);
 }
 
 /* ============================================================
-   TIPOGRAFIA — fora do @layer: altura de linha e corpo
-   precisam vencer os text-* do Tailwind
+   TIPOGRAFIA — fora do @layer para vencer os text-* do Tailwind
    ============================================================ */
-.display {
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  line-height: 0.86;
-  letter-spacing: -0.005em;
+.headline {
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
+}
+.title {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+}
+.eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--color-accent);
 }
 
-/* rótulo técnico — anotação de desenho */
-.label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-variation-settings: 'wdth' 87.5;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Componentes em @layer: assim as classes utilitárias do Tailwind (hidden, sm:…) vencem */
 @layer components {
-  /* ============================================================
-   INSTRUMENTO (bolha ISA): letras em cima, número embaixo
-   ============================================================ */
-  .instr {
-    position: relative;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: var(--s, 56px);
-    height: var(--s, 56px);
-    border: 1.5px solid var(--color-ink);
-    border-radius: 999px;
-    background: var(--color-sheet);
-    font-family: var(--font-mono);
-    font-variation-settings: 'wdth' 75;
-    line-height: 1;
+  /* ----- cartão translúcido ----- */
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
     transition:
-      background-color 0.4s,
-      color 0.4s,
-      border-color 0.4s;
+      transform 0.4s var(--ease-apple),
+      box-shadow 0.4s var(--ease-apple);
   }
-  .instr::after {
-    /* linha horizontal: instrumento montado no painel */
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    border-top: 1.5px solid currentColor;
-  }
-  .instr > span:first-child {
-    margin-bottom: 0.32em;
-    font-size: calc(var(--s, 56px) * 0.2);
-    font-weight: 700;
-  }
-  .instr > span:last-child {
-    margin-top: 0.32em;
-    font-size: calc(var(--s, 56px) * 0.18);
-  }
-  .instr[data-on='true'] {
-    background: var(--color-ink);
-    color: var(--color-paper);
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
   }
 
-  /* ============================================================
-   TUBULAÇÃO — espinha da página, preenchida pelo scroll
-   ============================================================ */
-  .pipe {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 6px;
-    margin-left: -3px;
-    border-left: 1.5px solid var(--color-ink);
-    border-right: 1.5px solid var(--color-ink);
-    background: var(--color-paper);
-  }
-  .pipe-fill {
-    position: absolute;
-    inset: 0;
-    background: var(--color-signal-bg);
-    transform-origin: top;
-    transform: scaleY(0);
+  /* superfície secundária sem borda (estilo "tile" da Apple) */
+  .tile {
+    background: var(--color-bg-2);
+    border-radius: var(--radius-card);
   }
 
-  /* linha de processo tracejada com fluxo (setas de sinal) */
-  .flow-line {
-    position: relative;
-    flex: 1;
-    min-width: 28px;
-    min-height: 28px;
-    background-image: linear-gradient(to right, var(--color-ink) 55%, transparent 0);
-    background-size: 10px 1.5px;
-    background-repeat: repeat-x;
-    background-position: 0 50%;
-    animation: flow-x 0.9s linear infinite;
-  }
-  .flow-line--v {
-    background-image: linear-gradient(to bottom, var(--color-ink) 55%, transparent 0);
-    background-size: 1.5px 10px;
-    background-repeat: repeat-y;
-    background-position: 50% 0;
-    animation-name: flow-y;
-  }
-  @keyframes flow-x {
-    to {
-      background-position: 10px 50%;
-    }
-  }
-  @keyframes flow-y {
-    to {
-      background-position: 50% 10px;
-    }
-  }
-
-  /* pacote de dados correndo pela linha */
-  .packet {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 7px;
-    height: 7px;
-    margin-top: -3.5px;
-    background: var(--color-signal-bg);
-    animation: packet-x 2.4s cubic-bezier(0.6, 0, 0.4, 1) infinite;
-    animation-delay: var(--atraso, 0s);
-  }
-  .flow-line--v .packet {
-    top: 0;
-    left: 50%;
-    margin: 0 0 0 -3.5px;
-    animation-name: packet-y;
-  }
-  @keyframes packet-x {
-    0% {
-      left: 0;
-      opacity: 0;
-    }
-    10%,
-    90% {
-      opacity: 1;
-    }
-    100% {
-      left: calc(100% - 7px);
-      opacity: 0;
-    }
-  }
-  @keyframes packet-y {
-    0% {
-      top: 0;
-      opacity: 0;
-    }
-    10%,
-    90% {
-      opacity: 1;
-    }
-    100% {
-      top: calc(100% - 7px);
-      opacity: 0;
-    }
-  }
-
-  /* ============================================================
-   COTA (linha de dimensão) — setas nas pontas
-   ============================================================ */
-  .cota {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .cota::before,
-  .cota::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--color-ink);
-  }
-  .cota-ponta {
-    position: absolute;
-    top: 50%;
-    width: 0;
-    height: 0;
-    margin-top: -4px;
-    border-top: 4px solid transparent;
-    border-bottom: 4px solid transparent;
-  }
-  .cota-ponta--e {
-    left: 0;
-    border-right: 9px solid var(--color-ink);
-  }
-  .cota-ponta--d {
-    right: 0;
-    border-left: 9px solid var(--color-ink);
-  }
-
-  /* ============================================================
-   FOLHA (card), TABELAS e PLACA
-   ============================================================ */
-  .sheet {
-    position: relative;
-    background: var(--color-sheet);
-    border: 1.5px solid var(--color-ink);
-    box-shadow: 6px 6px 0 rgba(19, 32, 58, 0.12);
-  }
-
-  /* tabela técnica — linhas finas, cabeçalho em tinta */
-  .tabela {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .tabela th {
-    padding: 0.6rem 0.9rem;
-    background: var(--color-ink);
-    color: var(--color-paper);
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 500;
-    font-variation-settings: 'wdth' 87.5;
-    letter-spacing: 0.08em;
-    text-align: left;
-    text-transform: uppercase;
-  }
-  .tabela td {
-    padding: 0.75rem 0.9rem;
-    border-bottom: 1px solid var(--color-rule);
-    vertical-align: top;
-  }
-
-  /* placa de identificação com rebites */
-  .placa {
-    position: relative;
-    background: linear-gradient(135deg, #f4f1ea 0%, #e6e2d8 40%, #f6f3ec 55%, #e1ddd2 100%);
-    border: 1.5px solid var(--color-ink);
-    outline: 1px solid var(--color-ink);
-    outline-offset: -8px;
-    box-shadow: 6px 6px 0 rgba(19, 32, 58, 0.12);
-  }
-  .rebite {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    border: 1.5px solid var(--color-ink);
-    background: radial-gradient(circle at 35% 35%, #fff, #b9b3a5);
-  }
-
-  /* carimbo de certificado */
-  .carimbo {
-    display: inline-block;
-    padding: 0.3rem 0.6rem;
-    border: 2px solid currentColor;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 700;
-    font-variation-settings: 'wdth' 75;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transform: rotate(-6deg);
-  }
-
-  /* faixa de atenção (amarelo e preto) */
-  .atencao {
-    border: 6px solid transparent;
-    border-image: repeating-linear-gradient(
-        -45deg,
-        var(--color-hazard) 0 10px,
-        var(--color-ink) 10px 20px
-      )
-      6;
-  }
-
-  /* ============================================================
-   BOTÕES
-   ============================================================ */
+  /* ----- pílulas / botões ----- */
   .btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    min-height: 48px;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 46px;
     padding: 0 1.4rem;
-    border: 1.5px solid var(--color-ink);
-    background: var(--color-ink);
-    color: var(--color-paper);
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-    font-variation-settings: 'wdth' 87.5;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    box-shadow: 4px 4px 0 var(--color-signal-bg);
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    background: var(--color-accent-solid);
+    color: var(--color-on-accent);
     transition:
-      transform 0.15s,
-      box-shadow 0.15s;
+      transform 0.25s var(--ease-apple),
+      background-color 0.25s,
+      opacity 0.25s;
   }
-  .btn:hover,
-  .btn:focus-visible {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-signal-bg);
+  .btn:hover {
+    transform: scale(1.03);
+    background: color-mix(in srgb, var(--color-accent-solid) 88%, #fff);
   }
   .btn:active {
-    transform: translate(4px, 4px);
-    box-shadow: 0 0 0 var(--color-signal-bg);
+    transform: scale(0.98);
   }
-  .btn--outline {
-    background: var(--color-sheet);
-    color: var(--color-ink);
-    box-shadow: 4px 4px 0 var(--color-ink);
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-line);
   }
-  .btn--outline:hover,
-  .btn--outline:focus-visible {
-    box-shadow: 6px 6px 0 var(--color-ink);
+  .btn--ghost:hover {
+    background: var(--color-bg-2);
   }
-  .btn--outline:active {
-    box-shadow: 0 0 0 var(--color-ink);
+  .btn--soft {
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    color: var(--color-accent);
+  }
+  .btn--soft:hover {
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
   }
 
-  /* botoeira — botão de comando industrial */
-  .botoeira {
-    position: relative;
+  /* link azul com seta, padrão Apple */
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+  .link-arrow svg {
+    transition: transform 0.25s var(--ease-apple);
+  }
+  .link-arrow:hover svg {
+    transform: translateX(3px);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background: var(--color-bg-2);
+    color: var(--color-text-2);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+
+  .icon-circle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 76px;
-    height: 76px;
+    width: 48px;
+    height: 48px;
     border-radius: 999px;
-    border: 1.5px solid var(--color-ink);
-    background: var(--color-paper-2);
-    box-shadow: inset 0 -3px 0 rgba(19, 32, 58, 0.25);
-  }
-  .botoeira-cabeca {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 999px;
-    background: var(--cor, var(--color-ink));
-    color: #fff;
-    box-shadow:
-      inset 0 -6px 0 rgba(0, 0, 0, 0.28),
-      inset 0 3px 0 rgba(255, 255, 255, 0.25),
-      0 4px 0 rgba(19, 32, 58, 0.35);
-    transition:
-      transform 0.12s,
-      box-shadow 0.12s;
-  }
-  .group:hover .botoeira-cabeca,
-  .group:focus-visible .botoeira-cabeca {
-    transform: translateY(1px);
-  }
-  .group:active .botoeira-cabeca {
-    transform: translateY(4px);
-    box-shadow:
-      inset 0 -2px 0 rgba(0, 0, 0, 0.28),
-      inset 0 2px 0 rgba(255, 255, 255, 0.2),
-      0 0 0 rgba(19, 32, 58, 0.35);
-  }
-
-  .link-u {
-    text-decoration: underline;
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 4px;
-    text-decoration-color: var(--color-signal-bg);
-    transition: text-decoration-color 0.2s;
-  }
-  .link-u:hover {
-    text-decoration-color: currentColor;
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    color: var(--color-accent);
   }
 }
 
@@ -439,10 +220,10 @@ body {
    ============================================================ */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(24px);
   transition:
-    opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity 0.9s var(--ease-apple),
+    transform 0.9s var(--ease-apple);
 }
 .reveal.is-in {
   opacity: 1;
@@ -458,11 +239,12 @@ body {
   left: 0.75rem;
   z-index: 100;
   padding: 0.75rem 1.1rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  transform: translateY(-150%);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--color-accent-solid);
+  color: var(--color-on-accent);
+  transform: translateY(-160%);
   transition: transform 0.2s;
 }
 .skip-link:focus {
@@ -470,8 +252,9 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-signal-bg);
+  outline: 3px solid var(--color-accent);
   outline-offset: 3px;
+  border-radius: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -479,17 +262,10 @@ body {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
   .reveal {
     opacity: 1;
-    transform: none;
-  }
-  .packet {
-    display: none;
-  }
-  .pipe-fill {
     transform: none;
   }
 }
@@ -504,27 +280,29 @@ body {
   z-index: 80;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.8rem 1.1rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  border: 1.5px solid var(--color-ink);
-  background: var(--color-sheet);
-  color: var(--color-ink);
-  box-shadow: 4px 4px 0 var(--color-run);
-  transform: translate(-50%, 1rem);
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid var(--color-line);
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+  transform: translate(-50%, 1.5rem);
   opacity: 0;
   pointer-events: none;
   transition:
-    opacity 0.25s,
-    transform 0.25s;
+    opacity 0.3s var(--ease-apple),
+    transform 0.3s var(--ease-apple);
 }
 .toast[data-visivel='true'] {
   opacity: 1;
   transform: translate(-50%, 0);
 }
 
-/* intro do topo: escondido até o GSAP assumir (sem JS ou com menos movimento, aparece direto) */
 .js [data-intro] {
   visibility: hidden;
 }

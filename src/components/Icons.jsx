@@ -1,7 +1,7 @@
 const base = {
   fill: 'none',
   stroke: 'currentColor',
-  strokeWidth: 1.6,
+  strokeWidth: 1.75,
   strokeLinecap: 'round',
   strokeLinejoin: 'round',
 }
@@ -234,5 +234,78 @@ export const IconPlay = (p) => (
     {...p}
   >
     <path d="M7 5v14l11-7z" />
+  </svg>
+)
+
+export const IconSun = (p) => (
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    {...base}
+    {...p}
+  >
+    <circle cx="12" cy="12" r="4.2" />
+    <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6" />
+  </svg>
+)
+
+export const IconMoon = (p) => (
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    {...base}
+    {...p}
+  >
+    <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5" />
+  </svg>
+)
+
+export const IconAuto = (p) => (
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    {...base}
+    {...p}
+  >
+    <circle cx="12" cy="12" r="8.2" />
+    <path d="M12 3.8v16.4" />
+    <path d="M12 3.8a8.2 8.2 0 0 1 0 16.4" fill="currentColor" stroke="none" />
+  </svg>
+)
+
+export const IconChevron = (p) => (
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    viewBox="0 0 24 24"
+    width="16"
+    height="16"
+    {...base}
+    {...p}
+  >
+    <path d="m9 6 6 6-6 6" />
+  </svg>
+)
+
+export const IconPlus = (p) => (
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    viewBox="0 0 24 24"
+    width="16"
+    height="16"
+    {...base}
+    {...p}
+  >
+    <path d="M12 5v14M5 12h14" />
   </svg>
 )

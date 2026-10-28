@@ -1,8 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
-import '@fontsource-variable/big-shoulders-display/wght'
-import '@fontsource-variable/martian-mono/standard'
-import '@fontsource-variable/atkinson-hyperlegible-next/wght'
+import '@fontsource-variable/inter/wght.css'
 import App from './App.jsx'
 import './index.css'
 
