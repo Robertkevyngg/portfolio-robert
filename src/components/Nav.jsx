@@ -79,7 +79,7 @@ export default function Nav() {
       >
         <a
           href="#inicio"
-          className="title truncate text-lg text-text transition-opacity hover:opacity-70"
+          className="title flex h-full items-center truncate text-lg text-text transition-opacity hover:opacity-70"
         >
           {profile.nome}
         </a>

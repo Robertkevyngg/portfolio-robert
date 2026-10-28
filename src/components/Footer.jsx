@@ -30,7 +30,7 @@ export default function Footer() {
             </li>
           ))}
         </ul>
-        <a href="#inicio" className="link-arrow text-sm">
+        <a href="#inicio" className="link-arrow inline-flex min-h-[28px] items-center py-1 text-sm">
           Voltar ao topo
         </a>
       </div>

@@ -47,7 +47,7 @@ function Destaque({ p, meta, expandido, alternar }) {
             onClick={alternar}
             aria-expanded={expandido}
             aria-controls={`detalhes-${p.id}`}
-            className="link-arrow mt-4 self-start text-sm"
+            className="link-arrow mt-4 inline-flex min-h-[28px] items-center self-start py-1 text-sm"
           >
             <IconPlus
               width="15"
@@ -95,7 +95,7 @@ function Destaque({ p, meta, expandido, alternar }) {
               href={meta.url}
               target="_blank"
               rel="noreferrer noopener"
-              className="link-arrow text-sm"
+              className="link-arrow inline-flex min-h-[28px] items-center py-1 text-sm"
             >
               <IconGithub width="16" height="16" /> Código
               <span className="sr-only"> de {p.titulo} (abre em nova aba)</span>
@@ -105,7 +105,7 @@ function Destaque({ p, meta, expandido, alternar }) {
                 href={meta.site}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="link-arrow text-sm"
+                className="link-arrow inline-flex min-h-[28px] items-center py-1 text-sm"
               >
                 <IconExternal width="15" height="15" /> Ver ao vivo
                 <span className="sr-only"> (abre em nova aba)</span>
