@@ -6,8 +6,9 @@ export default function Certifications() {
   return (
     <Section
       id="certificacoes"
-      eyebrow="Certificados"
-      titulo="Formação complementar"
+      fase="05"
+      eyebrow="Conquistas"
+      titulo="Conquistas desbloqueadas"
       legenda="Programação, cloud e desenvolvimento web."
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -20,10 +21,10 @@ export default function Certifications() {
             <div className="flex items-center justify-between gap-3">
               <span className="eyebrow text-xs">{c.area}</span>
               {c.status ? (
-                <span className="pill text-xs">{c.status}</span>
+                <span className="pill text-xs">em progresso</span>
               ) : (
                 <span className="flex items-center gap-1 text-xs font-medium text-good">
-                  <IconCheck width="14" height="14" /> concluído
+                  <IconCheck width="14" height="14" /> desbloqueada
                 </span>
               )}
             </div>

@@ -6,7 +6,8 @@ export default function Stack() {
     <Section
       id="stack"
       tint
-      eyebrow="Stack"
+      fase="04"
+      eyebrow="Inventário"
       titulo="Ferramentas de trabalho"
       legenda="O que uso no dia a dia — nas aulas, no estágio, nos projetos próprios e nos trabalhos para clientes."
     >

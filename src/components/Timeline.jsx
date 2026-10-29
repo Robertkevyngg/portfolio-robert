@@ -6,7 +6,8 @@ export default function Timeline() {
     <Section
       id="trajetoria"
       tint
-      eyebrow="Trajetória"
+      fase="06"
+      eyebrow="Save points"
       titulo="Linha do tempo"
       legenda="Formação, projetos e trabalho — na ordem em que aconteceram."
     >
@@ -22,7 +23,7 @@ export default function Timeline() {
             </div>
             <div className="relative border-l border-line pb-10 pl-6 last:pb-0 sm:pl-8">
               <span
-                className="absolute top-1.5 -left-[6.5px] h-3 w-3 rounded-full border-2 border-bg bg-accent sm:-left-[7px]"
+                className="absolute top-1.5 -left-[7px] h-3 w-3 border-2 border-bg bg-neon-2"
                 aria-hidden="true"
               />
               <span className="text-sm font-semibold text-accent sm:hidden">{t.periodo}</span>

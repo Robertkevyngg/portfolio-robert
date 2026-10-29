@@ -9,10 +9,13 @@ import Timeline from './components/Timeline'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import Toast from './components/Toast'
+import Climber from './components/Climber'
 import { useReveal } from './hooks/useReveal'
+import { useKonami } from './hooks/useKonami'
 
 export default function App() {
   useReveal()
+  useKonami()
 
   return (
     <>
@@ -20,7 +23,7 @@ export default function App() {
         pular para o conteúdo
       </a>
       <Nav />
-      <main id="conteudo" tabIndex={-1} className="outline-none">
+      <main id="conteudo" tabIndex={-1} className="relative outline-none">
         <Hero />
         <About />
         <Internship />
@@ -29,6 +32,7 @@ export default function App() {
         <Certifications />
         <Timeline />
         <Contact />
+        <Climber />
       </main>
       <Footer />
       <Toast />

@@ -52,7 +52,8 @@ export default function Internship() {
     <Section
       id="estagio"
       tint
-      eyebrow="Estágio · Baumier Automation"
+      fase="02"
+      eyebrow="Estágio · Baumier"
       titulo="Automação industrial na Baumier"
       legenda="O que construí e aprendi no estágio: comunicação Modbus, Linux em campo e a ponte entre TI e o chão de fábrica."
     >

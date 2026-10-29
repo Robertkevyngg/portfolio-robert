@@ -12,7 +12,8 @@ export default function Footer() {
     <footer className="border-t border-line px-5 py-10 sm:px-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 text-sm text-text-3 sm:flex-row">
         <p>
-          © <span suppressHydrationWarning>{new Date().getFullYear()}</span> {profile.nome} ·{' '}
+          <span className="pixel mr-2 text-[0.6rem] text-accent">Obrigado por jogar</span>©{' '}
+          <span suppressHydrationWarning>{new Date().getFullYear()}</span> {profile.nome} ·{' '}
           {profile.localCurto}
         </p>
         <ul className="flex items-center gap-1">
@@ -31,7 +32,7 @@ export default function Footer() {
           ))}
         </ul>
         <a href="#inicio" className="link-arrow inline-flex min-h-[28px] items-center py-1 text-sm">
-          Voltar ao topo
+          ↺ Jogar de novo
         </a>
       </div>
     </footer>

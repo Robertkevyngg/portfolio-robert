@@ -22,7 +22,13 @@ const pilares = [
 
 export default function About() {
   return (
-    <Section id="sobre" eyebrow="Sobre" titulo="Quem está por trás do código" legenda={profile.bio}>
+    <Section
+      id="sobre"
+      fase="01"
+      eyebrow="Seleção de personagem"
+      titulo="Quem está por trás do código"
+      legenda={profile.bio}
+    >
       <div className="grid gap-4 sm:grid-cols-3">
         {pilares.map((p, i) => (
           <article

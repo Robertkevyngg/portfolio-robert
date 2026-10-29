@@ -1,4 +1,5 @@
 import Section from './Section'
+import Continue from './Continue'
 import { profile } from '../data/profile'
 import { avisar } from '../lib/toast'
 import { IconArrow, IconCopy, IconGithub, IconLinkedin, IconMail, IconWhatsapp } from './Icons'
@@ -34,12 +35,14 @@ export default function Contact() {
     <Section
       id="contato"
       tint
-      eyebrow="Contato"
-      titulo="Vamos conversar"
+      fase="FIM"
+      eyebrow="Continue?"
+      titulo="Player 2, aperte start"
       legenda="Aberto a projetos freelance e a qualquer conversa boa sobre automação industrial, segurança, dados ou front-end. Respondo rápido."
     >
       <div className="mx-auto max-w-3xl">
-        <div className="reveal flex flex-wrap items-center justify-center gap-3">
+        <Continue />
+        <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-3">
           <a href={linkWhats} target="_blank" rel="noreferrer noopener" className="btn">
             <IconWhatsapp width="18" height="18" /> Chamar no WhatsApp
             <span className="sr-only">(abre em nova aba)</span>

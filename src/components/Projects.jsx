@@ -159,7 +159,8 @@ export default function Projects() {
   return (
     <Section
       id="projetos"
-      eyebrow="Projetos"
+      fase="03"
+      eyebrow="Missões"
       titulo="O que eu construí"
       legenda="Projetos em destaque com o contexto por trás, seguidos de todos os repositórios públicos — puxados ao vivo da API do GitHub."
     >
@@ -179,7 +180,7 @@ export default function Projects() {
       <div className="mt-20">
         <div className="reveal text-center">
           <h3 className="title text-2xl text-text sm:text-3xl">
-            Todos os repositórios
+            Missões secundárias
             {estado !== 'carregando' && (
               <span className="ml-2 font-normal text-text-3">({outros.length})</span>
             )}
