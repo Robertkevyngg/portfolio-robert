@@ -94,61 +94,64 @@ export default function Nav() {
   }, [])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-line/70 bg-[var(--glass-bg)] backdrop-blur-xl backdrop-saturate-150">
-      <nav
-        aria-label="Principal"
-        className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-5 sm:px-8"
-      >
-        <a
-          href="#inicio"
-          className="pixel flex h-full items-center gap-2 truncate text-[0.7rem] text-text transition-opacity hover:opacity-70"
+    <>
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-line/70 bg-[var(--glass-bg)] backdrop-blur-xl backdrop-saturate-150">
+        <nav
+          aria-label="Principal"
+          className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-5 sm:px-8"
         >
-          <span className="text-neon-2">P1</span> {profile.nome}
-        </a>
-
-        <ul className="hidden items-center gap-1 lg:flex">
-          {secoes.map((s) => (
-            <li key={s.id}>
-              <a
-                href={`#${s.id}`}
-                aria-current={ativa === s.id ? 'location' : undefined}
-                className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                  ativa === s.id ? 'text-text' : 'text-text-2 hover:text-text'
-                }`}
-              >
-                {s.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex shrink-0 items-center gap-2">
-          <ThemeToggle />
-          <button
-            ref={botaoMenu}
-            type="button"
-            onClick={() => setAberto((v) => !v)}
-            aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={aberto}
-            aria-controls="menu-mobile"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-text transition-colors hover:bg-bg-2 lg:hidden"
+          <a
+            href="#inicio"
+            className="pixel flex h-full items-center gap-2 truncate text-[0.7rem] text-text transition-opacity hover:opacity-70"
           >
-            {aberto ? <IconClose width="20" height="20" /> : <IconMenu width="20" height="20" />}
-          </button>
-        </div>
-        {/* barra de progresso da "fase": acompanha a rolagem da página */}
-        <span
-          ref={barra}
-          aria-hidden="true"
-          className="absolute bottom-0 left-0 h-[3px] w-full origin-left scale-x-0 bg-[linear-gradient(90deg,var(--color-neon-1),var(--color-neon-2),var(--color-neon-3))]"
-        />
-      </nav>
+            <span className="text-neon-2">P1</span> {profile.nome}
+          </a>
 
+          <ul className="hidden items-center gap-1 lg:flex">
+            {secoes.map((s) => (
+              <li key={s.id}>
+                <a
+                  href={`#${s.id}`}
+                  aria-current={ativa === s.id ? 'location' : undefined}
+                  className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
+                    ativa === s.id ? 'text-text' : 'text-text-2 hover:text-text'
+                  }`}
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex shrink-0 items-center gap-2">
+            <ThemeToggle />
+            <button
+              ref={botaoMenu}
+              type="button"
+              onClick={() => setAberto((v) => !v)}
+              aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
+              aria-expanded={aberto}
+              aria-controls="menu-mobile"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-text transition-colors hover:bg-bg-2 lg:hidden"
+            >
+              {aberto ? <IconClose width="20" height="20" /> : <IconMenu width="20" height="20" />}
+            </button>
+          </div>
+          {/* barra de progresso da "fase": acompanha a rolagem da página */}
+          <span
+            ref={barra}
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 h-[3px] w-full origin-left scale-x-0 bg-[linear-gradient(90deg,var(--color-neon-1),var(--color-neon-2),var(--color-neon-3))]"
+          />
+        </nav>
+      </header>
+
+      {/* fora do header: o backdrop-filter dele prenderia este fixed à altura da barra */}
       <div
         id="menu-mobile"
         ref={menu}
         inert={!aberto}
-        className={`fixed inset-0 top-14 bg-[var(--glass-bg)] backdrop-blur-2xl transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 top-14 z-30 bg-bg transition-opacity duration-300 lg:hidden ${
           aberto ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
       >
@@ -169,6 +172,6 @@ export default function Nav() {
           ))}
         </ul>
       </div>
-    </header>
+    </>
   )
 }
