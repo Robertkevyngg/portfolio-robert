@@ -61,16 +61,10 @@ troque ali se publicar em outro endereço.
 3. O Vercel detecta Vite sozinho (`npm run build`, saída `dist`). Só clicar em Deploy.
 4. Domínio próprio depois é um clique em **Settings → Domains**.
 
-### GitHub Pages
+### CI
 
-O workflow `.github/workflows/deploy.yml` já está pronto. Em todo push e pull request ele roda
-lint, checagem de formatação e build; na `main` também publica.
-
-1. Suba para a branch `main`.
-2. No repositório: **Settings → Pages → Source → GitHub Actions**.
-3. A cada push o site republica em `https://robertkevyngg.github.io/NOME-DO-REPO/`.
-
-O workflow ajusta o `base` do Vite para a subpasta automaticamente.
+O workflow `.github/workflows/ci.yml` roda lint, checagem de formatação e build em todo push e
+pull request. O deploy em si é feito pela Vercel.
 
 ### Netlify
 

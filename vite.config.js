@@ -48,7 +48,7 @@ function arquivosDeSeo(siteUrl) {
 }
 
 // base '/' serve para Vercel, Netlify e usuario.github.io
-// Para GitHub Pages em subpasta, o workflow define VITE_BASE=/nome-do-repo/
+// Para publicar em subpasta (ex.: GitHub Pages), defina VITE_BASE=/nome-do-repo/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
   return {
