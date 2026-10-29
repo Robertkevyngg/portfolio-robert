@@ -174,6 +174,31 @@ export const destaques = [
 // ---------------------------------------------------------------
 export const certificacoes = [
   {
+    nome: 'Ethical Hacker',
+    emissor: 'Cisco',
+    area: 'Cibersegurança',
+  },
+  {
+    nome: 'Introduction to Cybersecurity',
+    emissor: 'Cisco',
+    area: 'Cibersegurança',
+  },
+  {
+    nome: 'Computer Hardware Basics',
+    emissor: 'Cisco',
+    area: 'Infraestrutura',
+  },
+  {
+    nome: 'AWS Academy Graduate — Cloud Foundations',
+    emissor: 'Amazon Web Services',
+    area: 'Cloud',
+  },
+  {
+    nome: 'Construa com o Gemini',
+    emissor: 'Google',
+    area: 'IA',
+  },
+  {
     nome: 'Java Foundations Associate',
     emissor: 'Oracle',
     area: 'Programação',
@@ -201,7 +226,7 @@ export const certificacoes = [
   },
   {
     nome: 'Projeto Completo em Python com Estruturas de Dados',
-    emissor: 'IBM SkillsBuild',
+    emissor: 'Fundação Bradesco',
     area: 'Programação',
   },
   {

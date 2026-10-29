@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import Sprite from './Sprite'
 
-// Largura do conteúdo das seções (max-w-5xl + px-8) — as escadas ficam nas margens
+// Largura do conteúdo das seções (max-w-5xl + px-5/sm:px-8) — as escadas ficam nas margens
 const CONTEUDO = 1024
-const RECUO = 32
+// Acima desta largura sobra margem para o boneco grande; abaixo, ele encolhe
+const LARGO = 1240
 // Meia "zona de caminhada": quantos px de rolagem o boneco passa andando na viga
 const ZONA = 150
 // Ponto da tela que o boneco acompanha (0 = topo, 1 = base)
@@ -19,7 +20,8 @@ const limitar = (v, min, max) => Math.min(max, Math.max(min, v))
 function medir(main) {
   const topoMain = main.getBoundingClientRect().top
   const largura = main.clientWidth
-  const conteudo = Math.min(largura - RECUO * 2, CONTEUDO)
+  const recuo = largura >= 640 ? 32 : 20
+  const conteudo = Math.min(largura - recuo * 2, CONTEUDO)
   const margem = (largura - conteudo) / 2
   const esq = margem / 2
   const dir = largura - margem / 2
@@ -33,7 +35,8 @@ function medir(main) {
     const ate = ultimo ? largura / 2 : i % 2 === 0 ? dir : esq
     return { y, de, ate }
   })
-  return { trechos, largura }
+  // tamanho de cada pixel do sprite: no celular a margem tem só 20-32px
+  return { trechos, largura, escala: largura >= LARGO ? 4 : 2 }
 }
 
 /** Onde o boneco deve estar para a âncora `a` (px relativos ao topo de main). */
@@ -62,26 +65,26 @@ function posicao(a, trechos) {
 
 /**
  * Camada decorativa sobre o <main>: escadas nas margens e o personagem
- * que desce o site acompanhando a rolagem. Só aparece em telas largas.
+ * que desce o site acompanhando a rolagem. Em telas estreitas fica menor.
  */
 export default function Climber() {
   const camada = useRef(null)
   const boneco = useRef(null)
   const mapa = useRef(null)
   const [escadas, setEscadas] = useState([])
+  const [escala, setEscala] = useState(4)
   const [quadro, setQuadro] = useState({ nome: 'parado', virado: false })
 
   useEffect(() => {
     const main = camada.current?.parentElement
     if (!main) return
-    const mq = window.matchMedia('(min-width: 1240px)')
     const calmo = window.matchMedia('(prefers-reduced-motion: reduce)')
 
     const remedir = () => {
-      if (!mq.matches) return
       const m = medir(main)
       if (m.trechos.length === 0) return
       mapa.current = m
+      setEscala(m.escala)
       setEscadas(
         m.trechos.slice(0, -1).map((t, i) => ({ x: t.ate, de: t.y, ate: m.trechos[i + 1].y })),
       )
@@ -89,7 +92,6 @@ export default function Climber() {
 
     const ro = new ResizeObserver(remedir)
     ro.observe(main)
-    mq.addEventListener('change', remedir)
     remedir()
 
     let atual = null
@@ -107,7 +109,7 @@ export default function Climber() {
     const passo = (agora) => {
       raf = requestAnimationFrame(passo)
       const m = mapa.current
-      if (!m || !mq.matches || !boneco.current) return
+      if (!m || !boneco.current) return
 
       const topoMain = main.getBoundingClientRect().top
       const noFim = window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 2
@@ -123,13 +125,14 @@ export default function Climber() {
       if (Math.abs(dx) + Math.abs(dy) > 0.3) ultimoMov = agora
       const mexendo = agora - ultimoMov < 160
 
-      boneco.current.style.transform = `translate3d(${atual.x - 32}px, ${atual.y - 80}px, 0)`
+      boneco.current.style.transform = `translate3d(${atual.x - 8 * m.escala}px, ${atual.y - 20 * m.escala}px, 0)`
 
       if (alvo.modo === 'festa') quadro('festa', false)
-      else if (alvo.modo === 'sobe') quadro(Math.floor(atual.y / 22) % 2 ? 'sobeA' : 'sobeB', false)
+      else if (alvo.modo === 'sobe')
+        quadro(Math.floor(atual.y / (5.5 * m.escala)) % 2 ? 'sobeA' : 'sobeB', false)
       else if (alvo.modo === 'anda' && mexendo)
         quadro(
-          Math.floor(atual.x / 16) % 2 ? 'andaA' : 'andaB',
+          Math.floor(atual.x / (4 * m.escala)) % 2 ? 'andaA' : 'andaB',
           dx < 0 || (dx === 0 && estado.virado),
         )
       else quadro('parado', estado.virado)
@@ -139,7 +142,6 @@ export default function Climber() {
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
-      mq.removeEventListener('change', remedir)
     }
   }, [])
 
@@ -147,17 +149,23 @@ export default function Climber() {
     <div
       ref={camada}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-10 hidden overflow-hidden min-[1240px]:block"
+      className="pointer-events-none absolute inset-0 z-10 overflow-hidden"
     >
       {escadas.map((e, i) => (
         <div
           key={i}
           className="escada absolute"
-          style={{ left: e.x - 18, top: e.de, height: e.ate - e.de }}
+          style={{
+            left: e.x - 4.5 * escala,
+            top: e.de,
+            height: e.ate - e.de,
+            width: 9 * escala,
+            borderInlineWidth: escala,
+          }}
         />
       ))}
       <div ref={boneco} className="boneco absolute top-0 left-0 will-change-transform">
-        <Sprite quadro={quadro.nome} virado={quadro.virado} escala={4} />
+        <Sprite quadro={quadro.nome} virado={quadro.virado} escala={escala} />
       </div>
     </div>
   )

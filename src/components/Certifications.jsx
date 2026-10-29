@@ -9,7 +9,7 @@ export default function Certifications() {
       fase="05"
       eyebrow="Conquistas"
       titulo="Conquistas desbloqueadas"
-      legenda="Programação, cloud e desenvolvimento web."
+      legenda="Cibersegurança, cloud, programação e desenvolvimento web."
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {certificacoes.map((c, i) => (
