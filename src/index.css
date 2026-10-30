@@ -383,10 +383,17 @@ body::after {
 }
 
 /* escada pelas margens: dois trilhos e degraus */
+/* --px = tamanho do pixel do boneco (vem do Climber); tudo na escada segue essa escala */
 .escada {
-  width: 36px;
-  border-inline: 4px solid var(--escada);
-  background: repeating-linear-gradient(to bottom, transparent 0 14px, var(--escada) 14px 18px);
+  --px: 4px;
+  width: calc(var(--px) * 9);
+  translate: -50% 0;
+  border-inline: var(--px) solid var(--escada);
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 calc(var(--px) * 3.5),
+    var(--escada) calc(var(--px) * 3.5) calc(var(--px) * 4.5)
+  );
   opacity: 0.85;
 }
 

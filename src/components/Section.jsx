@@ -16,7 +16,8 @@ export default function Section({
     >
       {/* viga da fase: o personagem anda por ela antes de descer a escada */}
       <div data-girder className="viga" aria-hidden="true" />
-      <div className="mx-auto max-w-5xl">
+      {/* o Climber mede esta caixa para pôr as escadas no meio da margem */}
+      <div data-conteudo className="mx-auto max-w-5xl">
         <header className="reveal mx-auto mb-14 max-w-3xl text-center sm:mb-20">
           {eyebrow && (
             <p className="eyebrow text-[0.62rem] sm:text-xs">

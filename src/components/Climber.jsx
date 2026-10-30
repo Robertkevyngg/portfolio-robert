@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Sprite from './Sprite'
 
-// Largura do conteúdo das seções (max-w-5xl + px-5/sm:px-8) — as escadas ficam nas margens
-const CONTEUDO = 1024
-// Acima desta largura sobra margem para o boneco grande; abaixo, ele encolhe
-const LARGO = 1240
 // Meia "zona de caminhada": quantos px de rolagem o boneco passa andando na viga
 const ZONA = 150
 // Ponto da tela que o boneco acompanha (0 = topo, 1 = base)
@@ -16,13 +12,15 @@ const limitar = (v, min, max) => Math.min(max, Math.max(min, v))
 /**
  * Mede as vigas ([data-girder]) dentro de `main` e monta o percurso:
  * anda pela viga i, desce a escada i pela margem até a viga i+1, e assim por diante.
+ * A margem vem da caixa de conteúdo real das seções ([data-conteudo]).
  */
 function medir(main) {
-  const topoMain = main.getBoundingClientRect().top
+  const caixaMain = main.getBoundingClientRect()
+  const topoMain = caixaMain.top
   const largura = main.clientWidth
-  const recuo = largura >= 640 ? 32 : 20
-  const conteudo = Math.min(largura - recuo * 2, CONTEUDO)
-  const margem = (largura - conteudo) / 2
+  const conteudo = main.querySelector('[data-conteudo]')
+  if (!conteudo) return { trechos: [], largura, escala: 1 }
+  const margem = conteudo.getBoundingClientRect().left - caixaMain.left
   const esq = margem / 2
   const dir = largura - margem / 2
 
@@ -35,8 +33,8 @@ function medir(main) {
     const ate = ultimo ? largura / 2 : i % 2 === 0 ? dir : esq
     return { y, de, ate }
   })
-  // tamanho de cada pixel do sprite: no celular a margem tem só 20-32px
-  return { trechos, largura, escala: largura >= LARGO ? 4 : 2 }
+  // tamanho de cada pixel do sprite: o boneco (16 px de largura) tem que caber na margem
+  return { trechos, largura, escala: limitar(Math.floor(margem / 16), 1, 4) }
 }
 
 /** Onde o boneco deve estar para a âncora `a` (px relativos ao topo de main). */
@@ -70,9 +68,9 @@ function posicao(a, trechos) {
 export default function Climber() {
   const camada = useRef(null)
   const boneco = useRef(null)
+  // mapa.current (para o loop) e cena (para o render) apontam para a mesma medição
   const mapa = useRef(null)
-  const [escadas, setEscadas] = useState([])
-  const [escala, setEscala] = useState(4)
+  const [cena, setCena] = useState(null)
   const [quadro, setQuadro] = useState({ nome: 'parado', virado: false })
 
   useEffect(() => {
@@ -80,24 +78,22 @@ export default function Climber() {
     if (!main) return
     const calmo = window.matchMedia('(prefers-reduced-motion: reduce)')
 
-    const remedir = () => {
-      const m = medir(main)
-      if (m.trechos.length === 0) return
-      mapa.current = m
-      setEscala(m.escala)
-      setEscadas(
-        m.trechos.slice(0, -1).map((t, i) => ({ x: t.ate, de: t.y, ate: m.trechos[i + 1].y })),
-      )
-    }
-
-    const ro = new ResizeObserver(remedir)
-    ro.observe(main)
-    remedir()
-
     let atual = null
     let ultimoMov = 0
     let estado = { nome: 'parado', virado: false }
     let raf = 0
+    // só anima quando algo mudou (rolagem, tamanho) e para quando o boneco assenta
+    const pedir = () => {
+      if (!raf) raf = requestAnimationFrame(passo)
+    }
+
+    const remedir = () => {
+      const m = medir(main)
+      if (m.trechos.length === 0) return
+      mapa.current = m
+      setCena(m)
+      pedir()
+    }
 
     const quadro = (nome, virado) => {
       if (nome !== estado.nome || virado !== estado.virado) {
@@ -107,7 +103,7 @@ export default function Climber() {
     }
 
     const passo = (agora) => {
-      raf = requestAnimationFrame(passo)
+      raf = 0
       const m = mapa.current
       if (!m || !boneco.current) return
 
@@ -120,28 +116,41 @@ export default function Climber() {
       const antes = { ...atual }
       atual.x = lerp(atual.x, alvo.x, 0.22)
       atual.y = lerp(atual.y, alvo.y, 0.22)
+      const chegou = Math.abs(alvo.x - atual.x) + Math.abs(alvo.y - atual.y) < 0.5
+      if (chegou) Object.assign(atual, { x: alvo.x, y: alvo.y })
       const dx = atual.x - antes.x
       const dy = atual.y - antes.y
       if (Math.abs(dx) + Math.abs(dy) > 0.3) ultimoMov = agora
       const mexendo = agora - ultimoMov < 160
 
       boneco.current.style.transform = `translate3d(${atual.x - 8 * m.escala}px, ${atual.y - 20 * m.escala}px, 0)`
+      boneco.current.style.visibility = 'visible' // escondido até a primeira posição
 
       if (alvo.modo === 'festa') quadro('festa', false)
       else if (alvo.modo === 'sobe')
-        quadro(Math.floor(atual.y / (5.5 * m.escala)) % 2 ? 'sobeA' : 'sobeB', false)
+        // troca de quadro a cada degrau (um a cada 4,5 px do sprite, como no .escada)
+        quadro(Math.floor(atual.y / (4.5 * m.escala)) % 2 ? 'sobeA' : 'sobeB', false)
       else if (alvo.modo === 'anda' && mexendo)
         quadro(
           Math.floor(atual.x / (4 * m.escala)) % 2 ? 'andaA' : 'andaB',
           dx < 0 || (dx === 0 && estado.virado),
         )
       else quadro('parado', estado.virado)
+
+      if (!chegou || mexendo) pedir()
     }
-    raf = requestAnimationFrame(passo)
+
+    const ro = new ResizeObserver(remedir)
+    ro.observe(main)
+    remedir()
+    window.addEventListener('scroll', pedir, { passive: true })
+    window.addEventListener('resize', pedir)
 
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
+      window.removeEventListener('scroll', pedir)
+      window.removeEventListener('resize', pedir)
     }
   }, [])
 
@@ -151,21 +160,20 @@ export default function Climber() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 z-10 overflow-hidden"
     >
-      {escadas.map((e, i) => (
+      {cena?.trechos.slice(0, -1).map((t, i) => (
         <div
           key={i}
           className="escada absolute"
           style={{
-            left: e.x - 4.5 * escala,
-            top: e.de,
-            height: e.ate - e.de,
-            width: 9 * escala,
-            borderInlineWidth: escala,
+            left: t.ate,
+            top: t.y,
+            height: cena.trechos[i + 1].y - t.y,
+            '--px': `${cena.escala}px`,
           }}
         />
       ))}
-      <div ref={boneco} className="boneco absolute top-0 left-0 will-change-transform">
-        <Sprite quadro={quadro.nome} virado={quadro.virado} escala={escala} />
+      <div ref={boneco} className="boneco invisible absolute top-0 left-0 will-change-transform">
+        {cena && <Sprite quadro={quadro.nome} virado={quadro.virado} escala={cena.escala} />}
       </div>
     </div>
   )
